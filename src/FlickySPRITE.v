@@ -1,6 +1,6 @@
 // Copyright (c) 2017,19 MiSTer-X
 
-module FlickySPRITE
+module SEGASYS1_SPRITE
 (
 	input					VCLKx4,
 	input					VCLK,
@@ -11,7 +11,7 @@ module FlickySPRITE
 	output 	[9:0]		sprad,
 	input   [15:0]		sprdt,
 
-	output  [14:0]		sprchad,
+	output  [17:0]		sprchad,
 	input    [7:0]		sprchdt,
 
 	output reg		 	sprcoll,
@@ -70,7 +70,7 @@ always @(negedge VCLK) begin
 end
 
 assign sprad   = { spr_num, spr_ofs };
-assign sprchad = srcadrs[14:0];
+assign sprchad = { bank, srcadrs[14:0] };
 
 wire [9:0] sprcoll_adr = { spr_num[4:0], prevpix[8:4] };
 
@@ -157,7 +157,7 @@ always @ ( negedge VCLKx4 ) begin
 
 			// get srcadrs & calc chiprom address
 			4: begin
-				srcadrs <= srca; //|{ bank, 15'h0 };
+				srcadrs <= srca;
 				hflip   <= srca[15];
 				waitcnt <= 3;
 				phaseHD <= 5;

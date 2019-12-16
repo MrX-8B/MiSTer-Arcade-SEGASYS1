@@ -1,6 +1,13 @@
 // Copyright (c) 2017,19 MiSTer-X
 
-module FlickyMAIN
+`define EN_MCPU0		(ROMAD[17:15]==3'b00_0 ) 
+`define EN_MCPU8		(ROMAD[17:14]==4'b00_10) 
+
+//`define EN_MCPUDEC	(ROMAD[17:7]==10'b01_1110_0001_0) 
+`define EN_MCPUDEC	(1'b0)
+
+
+module SEGASYS1_MAIN
 (
 	input				CLK48M,
 	input				CLK3M,
@@ -80,8 +87,10 @@ wire [7:0]	cpu_rd_portA = DSW0;
 wire [7:0]	cpu_rd_portB = DSW1;
 
 wire [7:0]	cpu_rd_mrom;
-wire			cpu_cs_mrom = (CPUAD[15] == 1'b0);
-PRGROM prom(AXSCL, cpu_m1, CPUAD[14:0], cpu_rd_mrom, ROMCL,ROMAD,ROMDT,ROMEN );
+wire			cpu_cs_mrom = (CPUAD[15] == 1'b0) | (CPUAD[15:14] == 2'b10);
+
+//PRGROM_SYS1  prom(AXSCL, cpu_m1, CPUAD, cpu_rd_mrom, ROMCL,ROMAD,ROMDT,ROMEN );
+PRGROM_SYS1D prom(AXSCL, cpu_m1, CPUAD, cpu_rd_mrom, ROMCL,ROMAD,ROMDT,ROMEN );
 
 wire [7:0]	cpu_rd_mram;
 wire			cpu_cs_mram = (CPUAD[15:12] == 4'b1100);
@@ -113,7 +122,7 @@ endmodule
 //----------------------------------
 //  Program ROM with Decryptor 
 //----------------------------------
-module PRGROM
+module PRGROM_SYS1
 (
 	input 				clk,
 
@@ -138,8 +147,8 @@ wire  [6:0] decidx  = { madr[12], madr[8], madr[4], madr[0], ~madr[15], decidx0 
 wire  [7:0] dectbl;
 wire  [7:0] mdec    = ( mdat & andv ) | ( dectbl ^ xorv );
 
-DLROM #( 7,8) decrom( clk, decidx,   dectbl, ROMCL,ROMAD,ROMDT,ROMEN & (ROMAD[16: 7]==10'b1_1110_0001_0) );	// $1E100-$1E17F
-DLROM #(15,8) mainir( clk, madr[14:0], mdat, ROMCL,ROMAD,ROMDT,ROMEN & (ROMAD[16:15]==2'b0_0) );				// $00000-$07FFF
+DLROM #( 7,8) decrom( clk, decidx,   dectbl, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPUDEC );
+DLROM #(15,8) main0( clk, madr[14:0],  mdat, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU0   );
 
 reg phase = 1'b0;
 always @( negedge clk ) begin
@@ -149,3 +158,34 @@ always @( negedge clk ) begin
 end
 
 endmodule
+
+
+//----------------------------------
+//  Program ROM (Decrypted)
+//----------------------------------
+module PRGROM_SYS1D
+(
+	input 				clk,
+
+	input					mrom_m1,
+	input     [15:0]	mrom_ad,
+	output 	  [7:0]	mrom_dt,
+
+	input					ROMCL,		// Downloaded ROM image
+	input     [24:0]	ROMAD,
+	input	     [7:0]	ROMDT,
+	input					ROMEN
+);
+
+reg madr;
+always @(posedge clk) madr <= mrom_ad[15];
+
+wire [7:0] md0,md1;
+
+DLROM #(15,8) main0( clk, mrom_ad[14:0], md0, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU0 );
+DLROM #(14,8) main1( clk, mrom_ad[13:0], md1, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU8 );
+
+assign mrom_dt = madr ? md1 : md0;
+
+endmodule
+

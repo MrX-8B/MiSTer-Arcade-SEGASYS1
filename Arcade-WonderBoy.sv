@@ -79,8 +79,8 @@ localparam CONF_STR = {
 /*	"-;",
 	"O89,Lives,3,4,5,Infinite;",
 	"OAB,Extend,30k/80k/160k,30k/100k/200k,40k/120k/240k,40k/140k/280k;",
-	"OC,Difficulty,Easy,Hard;",
-	"-;",*/
+	"OC,Difficulty,Easy,Hard;",*/
+	"-;",
 	"R0,Reset;",
 	"J1,Jump,Start 1P,Start 2P,Coin;",
 	"V,v",`BUILD_DATE
@@ -274,9 +274,9 @@ wire [7:0] INP1 = ~{m_left2,m_right2,3'd0,m_trig21,2'd0};
 wire [7:0] INP2 = ~{2'd0,m_start2,m_start1,3'd0, m_coin}; 
 
 wire [7:0] DSW0 = 8'hFF;
-wire [7:0] DSW1 = 8'h00;
+wire [7:0] DSW1 = 8'hFE;
 
-FPGA_FLICKY GameCore ( 
+FPGA_SEGASYS1 GameCore ( 
 	.clk48M(clk_48M),.reset(iRST),
 
 	.INP0(INP0),.INP1(INP1),.INP2(INP2),

@@ -1,6 +1,9 @@
 // Copyright (c) 2017,19 MiSTer-X
 
-module FlickySND
+`define EN_SCPU	(ROMAD[17:13]==5'b00_110)	// $0C000-$0DFFF
+ 
+
+ module SEGASYS1_SOUND
 (
    input				clk8M,
 	input				reset,
@@ -61,7 +64,7 @@ wire  [7:0]		rom_dt;		// ROM
 wire  [7:0]		ram_do;		// RAM
 wire  [7:0]		comlatch;	// Sound Command Latch
 
-DLROM #(13,8) subir( cpuclkx2, cpu_ad[12:0], rom_dt, ROMCL,ROMAD,ROMDT,ROMEN & (ROMAD[16:13]==4'b1_110)); // $1C000-$1DFFF
+DLROM #(13,8) subir( cpuclkx2, cpu_ad[12:0], rom_dt, ROMCL,ROMAD,ROMDT,ROMEN & `EN_SCPU );
 SRAM_2048 wram( cpuclkx2, cpu_ad[10:0], ram_do, cpu_wr_ram, cpu_do );
 
 dataselector3 scpudisel(
@@ -72,7 +75,6 @@ dataselector3 scpudisel(
 	8'hFF
 );
 
-assign rom_ad = cpu_ad[12:0];
 
 SndPlayReq sndreq (
 	clk4M, reset,

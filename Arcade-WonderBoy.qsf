@@ -354,6 +354,7 @@ set_global_assignment -name FLOW_ENABLE_RTL_VIEWER OFF
 
 
 
+set_global_assignment -name SYSTEMVERILOG_FILE "Arcade-WonderBoy.sv"
 set_global_assignment -name QIP_FILE src/T80/T80.qip
 set_global_assignment -name QIP_FILE src/DPRAM1024_11B.qip
 set_global_assignment -name QIP_FILE src/DPRAM1024_1B.qip
@@ -365,7 +366,6 @@ set_global_assignment -name VERILOG_FILE src/FlickyVIDEO.v
 set_global_assignment -name VERILOG_FILE src/FlickySPRITE.v
 set_global_assignment -name VERILOG_FILE src/FlickySND.v
 set_global_assignment -name VERILOG_FILE src/FlickyMAIN.v
-set_global_assignment -name SYSTEMVERILOG_FILE "Arcade-Flicky.sv"
 set_global_assignment -name CDF_FILE jtag.cdf
 set_global_assignment -name QIP_FILE sys/sys.qip
 set_global_assignment -name QIP_FILE sys/pll.qip

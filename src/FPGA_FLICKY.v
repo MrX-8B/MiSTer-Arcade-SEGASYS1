@@ -1,9 +1,9 @@
 /********************************************************************
-           FPGA Implimentation of "FLICKY" (Top Module)
+        FPGA Implimentation of SEGA System 1,2  (Top Module)
 
 											Copyright (c) 2017,19 MiSTer-X
 *********************************************************************/
-module FPGA_FLICKY
+module FPGA_SEGASYS1
 (
 	input				clk48M,
 	input				reset,
@@ -40,7 +40,7 @@ wire  [7:0] CPUDO,VIDDO;
 wire			CPUWR,VIDCS,VBLK;
 wire			SNDRQ;
 
-FlickyMAIN Main (
+SEGASYS1_MAIN Main (
 	.RESET(reset),
 	.INP0(INP0),.INP1(INP1),.INP2(INP2),
 	.DSW0(DSW0),.DSW1(DSW1),
@@ -53,7 +53,7 @@ FlickyMAIN Main (
 );
 
 // Video
-FlickyVIDEO Video (
+SEGASYS1_VIDEO Video (
 	.VCLKx8(clk48M),.VCLKx4(clk24M),.VCLKx2(clk12M),.VCLK(clk6M),
 	.PH(PH),.PV(PV),.VBLK(VBLK),.RGB8(POUT),.PALDSW(1'b0),
 
@@ -65,7 +65,7 @@ FlickyVIDEO Video (
 assign PCLK = clk6M;
 
 // Sound
-FlickySND Sound(
+SEGASYS1_SOUND Sound(
 	clk8M, reset, CPUDO, SNDRQ, SOUT,
 	ROMCL, ROMAD, ROMDT, ROMEN
 );
