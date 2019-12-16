@@ -1,25 +1,29 @@
 @powershell -NoProfile -ExecutionPolicy Unrestricted "$s=[scriptblock]::create((gc \"%~f0\"|?{$_.readcount -gt 1})-join\"`n\");&$s" %*&goto:eof
 #==============================================================
-$zip="flicky.zip"
+$zip0="wboy2u.zip"
+$zip1="wboy.zip"
 $ifiles=`
-    "epr-5978a.116","epr-5979a.109",`
-    "epr-5855.117","epr-5856.110",`
-    "epr-5868.62","epr-5866.64","epr-5864.66",`
-    "epr-5867.61","epr-5865.63","epr-5863.65",`
-	"epr-5869.120",`
-    "pr-5317.76",`
-    "../dec_flicky.bin"
+    "ic129_02.bin","ic130_03.bin","ic131_04.bin","ic132_05.bin",`
+    "epr-7591.133","epr-7592.134",`
+    "epr7498a.3",`
+    "epr7498a.3",`
+    "epr-7485.117","epr-7486.110",`
+    "epr-7487.04","epr-7488.05",`
+    "epr-7497.62","epr-7495.64","epr-7493.66",`
+    "epr-7496.61","epr-7494.63","epr-7492.65",`
+    "pr-5317.76"
 
-$ofile="a.flicky.rom"
-$ofileMd5sumValid="c494eece5ee6420da07a83a41fbb0c29"
+$ofile="a.wonderboy.rom"
+$ofileMd5sumValid="2ac311dd197679382d7889e3b3e68b31"
 
-if (!(Test-Path "./$zip")) {
-    echo "Error: Cannot find $zip file."
+if (!((Test-Path "./$zip0") -And (Test-Path "./$zip1"))) {
+    echo "Error: Cannot find zip files."
 	echo ""
-	echo "Put $zip into the same directory."
+	echo "Put $zip0 and $zip1 into the same directory."
 }
 else {
-    Expand-Archive -Path "./$zip" -Destination ./tmp/ -Force
+    Expand-Archive -Path "./$zip0" -Destination ./tmp/ -Force
+    Expand-Archive -Path "./$zip1" -Destination ./tmp/ -Force
 
     cd tmp
     Get-Content $ifiles -Enc Byte -Read 512 | Set-Content "../$ofile" -Enc Byte
@@ -33,7 +37,7 @@ else {
         echo ""
         echo "Error: Generated $ofile is invalid."
         echo ""
-        echo "This is more likely due to incorrect $zip content."
+        echo "This is more likely due to incorrect $zip0 or $zip1 content."
     }
     else {
         echo "Checksum verification passed."
