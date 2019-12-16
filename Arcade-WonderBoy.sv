@@ -276,7 +276,7 @@ wire [7:0] INP2 = ~{2'd0,m_start2,m_start1,3'd0, m_coin};
 wire [7:0] DSW0 = 8'hFF;
 wire [7:0] DSW1 = 8'hFE;
 
-FPGA_SEGASYS1 GameCore ( 
+SEGASYSTEM1 GameCore ( 
 	.clk48M(clk_48M),.reset(iRST),
 
 	.INP0(INP0),.INP1(INP1),.INP2(INP2),

@@ -1,9 +1,9 @@
 /********************************************************************
-        FPGA Implimentation of SEGA System 1,2  (Top Module)
+        FPGA Implimentation of SEGA System 1,2 (Top Module)
 
 											Copyright (c) 2017,19 MiSTer-X
 *********************************************************************/
-module FPGA_SEGASYS1
+module SEGASYSTEM1
 (
 	input				clk48M,
 	input				reset,
