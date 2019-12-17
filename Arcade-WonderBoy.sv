@@ -76,21 +76,29 @@ localparam CONF_STR = {
 	"-;",
 	"O1,Aspect Ratio,Original,Wide;",
 	"O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
-/*	"-;",
-	"O89,Lives,3,4,5,Infinite;",
-	"OAB,Extend,30k/80k/160k,30k/100k/200k,40k/120k/240k,40k/140k/280k;",
-	"OC,Difficulty,Easy,Hard;",*/
+	"-;",
+	"O89,Lives,3,4,5,Endless;",
+	"OA,Extend,30k/100k/170k/240k,30k/120k/210k/300k;",
+	"OC,Difficulty,Easy,Hard;",
+	"OB,Allow Continue,Yes,No;",
+	"-;",
+	"OD,Demo Sound,On,Off;",
 	"-;",
 	"R0,Reset;",
-	"J1,Jump,Start 1P,Start 2P,Coin;",
+	"J1,Trig1,Trig2,Start 1P,Start 2P,Coin;",
 	"V,v",`BUILD_DATE
 };
-/*
-wire [1:0] dsLives  = ~status[9:8];
-wire [1:0] dsExtend = ~status[11:10]; 
-wire       dsDifclt = ~status[12]; 
-*/
+
 wire bCabinet = 1'b0;
+
+wire [1:0] dsLives  = ~status[9:8];
+wire 		  dsExtend = ~status[10]; 
+wire		  dsAlwCnt = ~status[11];
+wire       dsDifclt = ~status[12]; 
+wire       dsDmoSnd =  status[13]; 
+
+wire [7:0] DSW0 = 8'hFF;
+wire [7:0] DSW1 = {1'b1,dsDifclt,dsAlwCnt,dsExtend,dsLives,dsDmoSnd,bCabinet};
 
 
 ////////////////////   CLOCKS   ///////////////////
@@ -205,16 +213,18 @@ reg btn_trig2_2 = 0;
 wire m_left2   = btn_left_2  | joystk2[1];
 wire m_right2  = btn_right_2 | joystk2[0];
 wire m_trig21  = btn_trig1_2 | joystk2[4];
+wire m_trig22  = btn_trig2_2 | joystk2[5];
 
-wire m_start1  = btn_one_player  | joystk1[5] | joystk2[5] | btn_start_1;
-wire m_start2  = btn_two_players | joystk1[6] | joystk2[6] | btn_start_2;
+wire m_start1  = btn_one_player  | joystk1[6] | joystk2[6] | btn_start_1;
+wire m_start2  = btn_two_players | joystk1[7] | joystk2[7] | btn_start_2;
 
 wire m_left1   = btn_left    | joystk1[1] | (bCabinet ? 1'b0 : m_left2);
 wire m_right1  = btn_right   | joystk1[0] | (bCabinet ? 1'b0 : m_right2);
 wire m_trig11  = btn_trig1   | joystk1[4] | (bCabinet ? 1'b0 : m_trig21);
+wire m_trig12  = btn_trig2   | joystk1[5] | (bCabinet ? 1'b0 : m_trig22);
 
-wire m_coin1   = btn_one_player | btn_coin_1 | joystk1[7];
-wire m_coin2   = btn_two_players| btn_coin_2 | joystk2[7];
+wire m_coin1   = btn_one_player | btn_coin_1 | joystk1[8];
+wire m_coin2   = btn_two_players| btn_coin_2 | joystk2[8];
 wire m_coin    = (m_coin1|m_coin2);
 
 
@@ -269,12 +279,9 @@ assign AUDIO_S = 0; // unsigned PCM
 
 wire iRST = RESET | status[0] | buttons[1] | ioctl_download;
 
-wire [7:0] INP0 = ~{m_left1,m_right1,3'd0,m_trig11,2'd0}; 
-wire [7:0] INP1 = ~{m_left2,m_right2,3'd0,m_trig21,2'd0}; 
+wire [7:0] INP0 = ~{m_left1,m_right1,3'd0,m_trig12,m_trig11,1'd0}; 
+wire [7:0] INP1 = ~{m_left2,m_right2,3'd0,m_trig22,m_trig21,1'd0}; 
 wire [7:0] INP2 = ~{2'd0,m_start2,m_start1,3'd0, m_coin}; 
-
-wire [7:0] DSW0 = 8'hFF;
-wire [7:0] DSW1 = 8'hFE;
 
 SEGASYSTEM1 GameCore ( 
 	.clk48M(clk_48M),.reset(iRST),
