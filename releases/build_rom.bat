@@ -7,14 +7,14 @@ $ifiles=`
     "epr-7591.133","epr-7592.134",`
     "epr7498a.3",`
     "epr7498a.3",`
-    "epr-7485.117","epr-7486.110",`
-    "epr-7487.04","epr-7488.05",`
+    "epr-7485.117","epr-7487.04",`
+    "epr-7486.110","epr-7488.05",`
     "epr-7497.62","epr-7495.64","epr-7493.66",`
     "epr-7496.61","epr-7494.63","epr-7492.65",`
     "pr-5317.76"
 
 $ofile="a.wonderboy.rom"
-$ofileMd5sumValid="2ac311dd197679382d7889e3b3e68b31"
+$ofileMd5sumValid="a4d870950b164555f1df9899cabb0356"
 
 if (!((Test-Path "./$zip0") -And (Test-Path "./$zip1"))) {
     echo "Error: Cannot find zip files."
