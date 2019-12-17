@@ -1,9 +1,9 @@
-00000-07FFF MCPU (encrypt/non-encrypt)
-08000-0BFFF MCPU (non-encrypt)
+00000-07FFF MCPU (encrypted)
+08000-0BFFF MCPU (non-encrypted)
 
 0C000-0DFFF SCPU
 
- (padding)
+ (padding 2000h)
 
 10000-17FFF SPRITE BANK0
 18000-1FFFF SPRITE BANK1

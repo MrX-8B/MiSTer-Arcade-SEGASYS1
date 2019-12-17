@@ -1,12 +1,11 @@
 @powershell -NoProfile -ExecutionPolicy Unrestricted "$s=[scriptblock]::create((gc \"%~f0\"|?{$_.readcount -gt 1})-join\"`n\");&$s" %*&goto:eof
 #==============================================================
-$zip0="wboy2u.zip"
-$zip1="wboy.zip"
+$zip="wboy.zip"
 $ifiles=`
-    "ic129_02.bin","ic130_03.bin","ic131_04.bin","ic132_05.bin",`
-    "epr-7591.133","epr-7592.134",`
-    "epr7498a.3",`
-    "epr7498a.3",`
+    "epr-7489.116","epr-7490.109",`
+    "epr-7491.96",`
+    "epr-7498.120",`
+    "epr-7498.120",`
     "epr-7485.117","epr-7487.04",`
     "epr-7486.110","epr-7488.05",`
     "epr-7497.62","epr-7495.64","epr-7493.66",`
@@ -14,16 +13,15 @@ $ifiles=`
     "pr-5317.76"
 
 $ofile="a.wonderboy.rom"
-$ofileMd5sumValid="a4d870950b164555f1df9899cabb0356"
+$ofileMd5sumValid="1180dd60388421fb2b4573f2eabd573e"
 
-if (!((Test-Path "./$zip0") -And (Test-Path "./$zip1"))) {
-    echo "Error: Cannot find zip files."
+if (!(Test-Path "./$zip")) {
+    echo "Error: Cannot find $zip file."
 	echo ""
-	echo "Put $zip0 and $zip1 into the same directory."
+	echo "Put $zip into the same directory."
 }
 else {
-    Expand-Archive -Path "./$zip0" -Destination ./tmp/ -Force
-    Expand-Archive -Path "./$zip1" -Destination ./tmp/ -Force
+    Expand-Archive -Path "./$zip" -Destination ./tmp/ -Force
 
     cd tmp
     Get-Content $ifiles -Enc Byte -Read 512 | Set-Content "../$ofile" -Enc Byte
@@ -37,7 +35,7 @@ else {
         echo ""
         echo "Error: Generated $ofile is invalid."
         echo ""
-        echo "This is more likely due to incorrect $zip0 or $zip1 content."
+        echo "This is more likely due to incorrect $zip content."
     }
     else {
         echo "Checksum verification passed."
@@ -48,4 +46,3 @@ else {
 echo ""
 echo ""
 pause
-
