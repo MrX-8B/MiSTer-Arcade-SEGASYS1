@@ -10,10 +10,11 @@ $ifiles=`
     "epr-7486.110","epr-7488.05",`
     "epr-7497.62","epr-7495.64","epr-7493.66",`
     "epr-7496.61","epr-7494.63","epr-7492.65",`
-    "pr-5317.76"
+    "pr-5317.76",
+    "../dectbl_315_3177.bin"
 
 $ofile="a.wonderboy.rom"
-$ofileMd5sumValid="1180dd60388421fb2b4573f2eabd573e"
+$ofileMd5sumValid="807e48e44a0c5813b3b28f89a6f8a4ad"
 
 if (!(Test-Path "./$zip")) {
     echo "Error: Cannot find $zip file."

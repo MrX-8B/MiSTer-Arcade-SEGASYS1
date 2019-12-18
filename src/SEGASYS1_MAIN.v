@@ -1,11 +1,7 @@
 // Copyright (c) 2017,19 MiSTer-X
 
-`define EN_MCPU0		(ROMAD[17:15]==3'b00_0 ) 
-`define EN_MCPU8		(ROMAD[17:14]==4'b00_10) 
-
-//`define EN_MCPUDEC	(ROMAD[17:7]==10'b01_1110_0001_0) 
-`define EN_MCPUDEC	(1'b0)
-
+//`define PROGROM_TYPE	SEGASYS1_PRGROMT2
+`define PROGROM_TYPE	SEGASYS1_PRGROMD
 
 module SEGASYS1_MAIN
 (
@@ -89,8 +85,7 @@ wire [7:0]	cpu_rd_portB = DSW1;
 wire [7:0]	cpu_rd_mrom;
 wire			cpu_cs_mrom = (CPUAD[15] == 1'b0) | (CPUAD[15:14] == 2'b10);
 
-//PRGROM_SYS1  prom(AXSCL, cpu_m1, CPUAD, cpu_rd_mrom, ROMCL,ROMAD,ROMDT,ROMEN );
-PRGROM_SYS1D prom(AXSCL, cpu_m1, CPUAD, cpu_rd_mrom, ROMCL,ROMAD,ROMDT,ROMEN );
+`PROGROM_TYPE prom(AXSCL, cpu_m1, CPUAD, cpu_rd_mrom, ROMCL,ROMAD,ROMDT,ROMEN );
 
 wire [7:0]	cpu_rd_mram;
 wire			cpu_cs_mram = (CPUAD[15:12] == 4'b1100);
@@ -118,74 +113,4 @@ dataselector8 mcpudisel(
 
 endmodule
 
-
-//----------------------------------
-//  Program ROM with Decryptor 
-//----------------------------------
-module PRGROM_SYS1
-(
-	input 				clk,
-
-	input					mrom_m1,
-	input     [14:0]	mrom_ad,
-	output reg [7:0]	mrom_dt,
-
-	input					ROMCL,		// Downloaded ROM image
-	input     [24:0]	ROMAD,
-	input	     [7:0]	ROMDT,
-	input					ROMEN
-);
-
-reg  [15:0] madr;
-wire  [7:0] mdat;
-
-wire			f		  = mdat[7];
-wire  [7:0] xorv    = { f, 1'b0, f, 1'b0, f, 3'b000 }; 
-wire  [7:0] andv    = ~(8'hA8);
-wire  [1:0] decidx0 = { mdat[5],  mdat[3] } ^ { f, f };
-wire  [6:0] decidx  = { madr[12], madr[8], madr[4], madr[0], ~madr[15], decidx0 };
-wire  [7:0] dectbl;
-wire  [7:0] mdec    = ( mdat & andv ) | ( dectbl ^ xorv );
-
-DLROM #( 7,8) decrom( clk, decidx,   dectbl, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPUDEC );
-DLROM #(15,8) main0( clk, madr[14:0],  mdat, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU0   );
-
-reg phase = 1'b0;
-always @( negedge clk ) begin
-	if ( phase ) mrom_dt <= mdec;
-	else madr <= { mrom_m1, mrom_ad };
-	phase <= ~phase;
-end
-
-endmodule
-
-
-//----------------------------------
-//  Program ROM (Decrypted)
-//----------------------------------
-module PRGROM_SYS1D
-(
-	input 				clk,
-
-	input					mrom_m1,
-	input     [15:0]	mrom_ad,
-	output 	  [7:0]	mrom_dt,
-
-	input					ROMCL,		// Downloaded ROM image
-	input     [24:0]	ROMAD,
-	input	     [7:0]	ROMDT,
-	input					ROMEN
-);
-
-reg madr;
-always @(posedge clk) madr <= mrom_ad[15];
-
-wire [7:0] md0,md1;
-
-DLROM #(15,8) main0( clk, mrom_ad[14:0], md0, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU0 );
-DLROM #(14,8) main1( clk, mrom_ad[13:0], md1, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU8 );
-
-assign mrom_dt = madr ? md1 : md0;
-
-endmodule
 
