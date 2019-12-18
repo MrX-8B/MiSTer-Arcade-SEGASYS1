@@ -354,7 +354,7 @@ set_global_assignment -name FLOW_ENABLE_RTL_VIEWER OFF
 
 
 
-set_global_assignment -name VERILOG_FILE src/SEGASYS1_PRGROM.v
+set_global_assignment -name VERILOG_FILE src/SEGASYS1_PRGDEC.v
 set_global_assignment -name VERILOG_FILE src/SEGASYS1_VIDEO.v
 set_global_assignment -name VERILOG_FILE src/SEGASYS1_SPRITE.v
 set_global_assignment -name VERILOG_FILE src/SEGASYS1_SOUND.v
