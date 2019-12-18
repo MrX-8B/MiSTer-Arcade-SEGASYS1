@@ -93,10 +93,10 @@ wire [7:0]	cpu_rd_mrom1;
 wire [14:0] rad;
 wire  [7:0] rdt;
 
+SEGASYS1_PRGDEC decr(AXSCL,cpu_m1,CPUAD,cpu_rd_mrom0, rad,rdt, ROMCL,ROMAD,ROMDT,ROMEN);
+
 DLROM #(15,8) rom0(AXSCL,   rad,         rdt, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU0);	// ($0000-$7FFF encrypted)
 DLROM #(14,8) rom1(CPUCLn,CPUAD,cpu_rd_mrom1, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU8);	// ($8000-$BFFF non-encrypted)
-
-SEGASYS1_PRGDEC decr(AXSCL,cpu_m1,CPUAD,cpu_rd_mrom0, rad,rdt, ROMCL,ROMAD,ROMDT,ROMEN);
 
 
 // Work RAM
@@ -125,6 +125,7 @@ dataselector10 mcpudisel(
 	cpu_cs_mram,  cpu_rd_mram,
 	cpu_cs_mrom0, cpu_rd_mrom0,
 	cpu_cs_mrom1, cpu_rd_mrom1,
+	1'b0, 8'd0,
 	8'hFF
 );
 
