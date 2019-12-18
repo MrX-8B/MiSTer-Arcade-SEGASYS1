@@ -303,9 +303,9 @@ endmodule
 
 
 //----------------------------------
-//  Data Selector 8 to 1
+//  Data Selector 10 to 1
 //----------------------------------
-module dataselector8(
+module dataselector10(
 
 	output [7:0] oDATA,
 
@@ -333,6 +333,12 @@ module dataselector8(
 	input iSEL7,
 	input [7:0] iDATA7,
 
+	input iSEL8,
+	input [7:0] iDATA8,
+
+	input iSEL9,
+	input [7:0] iDATA9,
+
 	input [7:0] dData
 );
 
@@ -344,6 +350,8 @@ assign oDATA = iSEL0 ? iDATA0 :
 					iSEL5 ? iDATA5 :
 					iSEL6 ? iDATA6 :
 					iSEL7 ? iDATA7 :
+					iSEL8 ? iDATA8 :
+					iSEL9 ? iDATA9 :
 					dData;
 
 endmodule

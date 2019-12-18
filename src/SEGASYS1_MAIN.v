@@ -1,8 +1,7 @@
 // Copyright (c) 2017,19 MiSTer-X
 
-`define PROGROM_TYPE	SEGASYS1_PRGROMT2
-//`define PROGROM_TYPE	SEGASYS1_PRGROMT1
-//`define PROGROM_TYPE	SEGASYS1_PRGROMD
+`define EN_MCPU0		(ROMAD[17:15]==3'b00_0 ) 
+`define EN_MCPU8		(ROMAD[17:14]==4'b00_10) 
 
 module SEGASYS1_MAIN
 (
@@ -83,15 +82,30 @@ wire [7:0]	cpu_rd_portS = INP2;
 wire [7:0]	cpu_rd_portA = DSW0;
 wire [7:0]	cpu_rd_portB = DSW1;
 
-wire [7:0]	cpu_rd_mrom;
-wire			cpu_cs_mrom = (CPUAD[15] == 1'b0) | (CPUAD[15:14] == 2'b10);
 
-`PROGROM_TYPE prom(AXSCL, cpu_m1, CPUAD, cpu_rd_mrom, ROMCL,ROMAD,ROMDT,ROMEN );
+// Program ROM
+wire			cpu_cs_mrom0 = (CPUAD[15]    == 1'b0 );
+wire			cpu_cs_mrom1 = (CPUAD[15:14] == 2'b10);
 
+wire [7:0]	cpu_rd_mrom0;
+wire [7:0]	cpu_rd_mrom1;
+
+wire [14:0] rad;
+wire  [7:0] rdt;
+
+DLROM #(15,8) rom0(AXSCL,   rad,         rdt, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU0);	// ($0000-$7FFF encrypted)
+DLROM #(14,8) rom1(CPUCLn,CPUAD,cpu_rd_mrom1, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU8);	// ($8000-$BFFF non-encrypted)
+
+SEGASYS1_PRGDEC decr(AXSCL,cpu_m1,CPUAD,cpu_rd_mrom0, rad,rdt, ROMCL,ROMAD,ROMDT,ROMEN);
+
+
+// Work RAM
 wire [7:0]	cpu_rd_mram;
 wire			cpu_cs_mram = (CPUAD[15:12] == 4'b1100);
 SRAM_4096 mainram(CPUCLn, CPUAD[11:0], cpu_rd_mram, cpu_cs_mram & CPUWR, CPUDO );
 
+
+// Video mode latch
 reg [7:0] vidmode;
 always @(posedge CPUCLn) begin
 	if ((CPUAD[4:0] == 5'b1_1001) & cpu_iorq & _cpu_wr) begin
@@ -99,7 +113,8 @@ always @(posedge CPUCLn) begin
 	end
 end
 
-dataselector8 mcpudisel(
+
+dataselector10 mcpudisel(
 	CPUDI,
 	VIDCS, VIDDO,
 	cpu_cs_port1, cpu_rd_port1,
@@ -108,10 +123,10 @@ dataselector8 mcpudisel(
 	cpu_cs_portA, cpu_rd_portA,
 	cpu_cs_portB, cpu_rd_portB,
 	cpu_cs_mram,  cpu_rd_mram,
-	cpu_cs_mrom,  cpu_rd_mrom,
+	cpu_cs_mrom0, cpu_rd_mrom0,
+	cpu_cs_mrom1, cpu_rd_mrom1,
 	8'hFF
 );
 
 endmodule
-
 

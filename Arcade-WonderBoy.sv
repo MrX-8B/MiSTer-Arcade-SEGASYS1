@@ -1,8 +1,9 @@
 //=========================================================
-//  Arcade: Wonder Boy  port to MiSTer
+//  Arcade: Wonder Boy  for MiSTer
 //
-//  Original implementation and ported by MiSTer-X 2019
+//                          Copyright (c) 2019 MiSTer-X
 //=========================================================
+//`define UNIVERSAL
 
 module emu
 (
@@ -70,6 +71,8 @@ assign HDMI_ARX = status[1] ? 8'd16 : 8'd4;
 assign HDMI_ARY = status[1] ? 8'd9  : 8'd3;
 
 `include "build_id.v" 
+
+`ifndef UNIVERSAL
 localparam CONF_STR = {
 	"A.WonderBoy;;",
 	"F0,rom;", // allow loading of alternate ROMs
@@ -100,6 +103,26 @@ wire       dsDmoSnd =  status[13];
 wire [7:0] DSW0 = 8'hFF;
 wire [7:0] DSW1 = {1'b1,dsDifclt,dsAlwCnt,dsExtend,dsLives,dsDmoSnd,bCabinet};
 
+`else
+
+localparam CONF_STR = {
+	"A.SEGASYS1;;",
+	"F0,rom;", // allow loading of alternate ROMs
+	"-;",
+	"O1,Aspect Ratio,Original,Wide;",
+	"O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
+	"-;",
+	"R0,Reset;",
+	"J1,Trig1,Trig2,Start 1P,Start 2P,Coin;",
+	"V,v",`BUILD_DATE
+};
+
+wire bCabinet = 1'b0;
+
+wire [7:0] DSW0 = 8'hFF;
+wire [7:0] DSW1 = 8'hFE;
+
+`endif
 
 ////////////////////   CLOCKS   ///////////////////
 
@@ -296,48 +319,4 @@ SEGASYSTEM1 GameCore (
 );
 
 endmodule
-
-
-module HVGEN
-(
-	output  [8:0]		HPOS,
-	output  [8:0]		VPOS,
-	input 				PCLK,
-	input	 [14:0]		iRGB,
-
-	output reg [14:0]	oRGB,
-	output reg			HBLK = 1,
-	output reg			VBLK = 1,
-	output reg			HSYN = 1,
-	output reg			VSYN = 1
-);
-
-reg [8:0] hcnt = 0;
-reg [8:0] vcnt = 0;
-
-assign HPOS = hcnt-16;
-assign VPOS = vcnt;
-
-always @(posedge PCLK) begin
-	case (hcnt)
-		 15: begin HBLK <= 0; hcnt <= hcnt+1; end
-		272: begin HBLK <= 1; hcnt <= hcnt+1; end
-		311: begin HSYN <= 0; hcnt <= hcnt+1; end
-		342: begin HSYN <= 1; hcnt <= 471;    end
-		511: begin hcnt <= 0;
-			case (vcnt)
-				223: begin VBLK <= 1; vcnt <= vcnt+1; end
-				226: begin VSYN <= 0; vcnt <= vcnt+1; end
-				233: begin VSYN <= 1; vcnt <= 483;	  end
-				511: begin VBLK <= 0; vcnt <= 0;		  end
-				default: vcnt <= vcnt+1;
-			endcase
-		end
-		default: hcnt <= hcnt+1;
-	endcase
-	oRGB <= (HBLK|VBLK) ? 15'h0 : iRGB;
-end
-
-endmodule
-
 

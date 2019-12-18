@@ -1,7 +1,6 @@
 // Copyright (c) 2017,19 MiSTer-X
 
-`define EN_MCPU0		(ROMAD[17:15]==3'b00_0 ) 
-`define EN_MCPU8		(ROMAD[17:14]==4'b00_10) 
+`define DECTBLADRS	(25'h2C100)
 
 `define EN_DEC1TBL	(ROMAD[17:7]==11'b10_1100_0001_0)	// $2C100	 
 
@@ -9,16 +8,16 @@
 `define EN_DEC2SWP	(ROMAD[17:7]==11'b10_1100_0001_1)	// $2C180 
 
 
-//----------------------------------------
-//  Program ROM with Decryptor (Type 1)
-//----------------------------------------
-module SEGASYS1_PRGROMT1
+module SEGASYS1_PRGDEC
 (
 	input 				clk,
 
-	input					mrom_m1,
-	input     [15:0]	mrom_ad,
-	output reg [7:0]	mrom_dt,
+	input					mrom_m1,		// connect to CPU
+	input     [14:0]	mrom_ad,
+	output     [7:0]	mrom_dt,
+
+	output    [14:0]	rad,			// connect to ROM
+	input		  [7:0]	rdt,
 
 	input					ROMCL,		// Downloaded ROM image
 	input     [24:0]	ROMAD,
@@ -26,43 +25,85 @@ module SEGASYS1_PRGROMT1
 	input					ROMEN
 );
 
-reg  [16:0] madr;
-wire  [7:0] mdat;
+wire  [7:0] od0,od1;
+wire [14:0] dum;
 
-wire			f		  = mdat[7];
-wire  [7:0] xorv    = { f, 1'b0, f, 1'b0, f, 3'b000 }; 
-wire  [7:0] andv    = ~(8'hA8);
-wire  [1:0] decidx0 = { mdat[5],  mdat[3] } ^ { f, f };
-wire  [6:0] decidx  = { madr[12], madr[8], madr[4], madr[0], ~madr[16], decidx0 };
-wire  [7:0] dectbl;
-wire  [7:0] mdec    = ( mdat & andv ) | ( dectbl ^ xorv );
+SEGASYS1_DECT1 t1(clk,mrom_m1,mrom_ad, od0, rad,rdt, ROMCL,ROMAD,ROMDT,ROMEN);
+SEGASYS1_DECT2 t2(clk,mrom_m1,mrom_ad, od1, dum,rdt, ROMCL,ROMAD,ROMDT,ROMEN);
 
-wire  [7:0] md1;
-
-DLROM #(7,8)  dect( clk, decidx,     dectbl, ROMCL,ROMAD,ROMDT,ROMEN & `EN_DEC1TBL );
-DLROM #(15,8) rom0( clk, madr[14:0],   mdat, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU0   );	// ($0000-$7FFF encrypted)
-DLROM #(14,8) rom1( clk, mrom_ad[13:0], md1, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU8   );	// ($8000-$BFFF non-encrypted)
-
-reg phase = 1'b0;
-always @( negedge clk ) begin
-	if ( phase ) mrom_dt <= madr[15] ? md1 : mdec;
-	else madr <= { mrom_m1, mrom_ad };
-	phase <= ~phase;
+// Type Detect and switch
+reg [15:0] cnt;
+always @(posedge ROMCL) begin
+	if (ROMEN) begin
+		if (ROMAD>=`DECTBLADRS) begin
+			cnt <= (ROMDT>=8'd24) ? 0 : (cnt+1);
+		end
+		else cnt <= 0;
+	end
 end
+assign mrom_dt = (cnt>=128) ? od1 : od0;
 
 endmodule
 
 
 //----------------------------------------
-//  Program ROM with Decryptor (Type 2)
+//  Program ROM Decryptor (Type 1)
 //----------------------------------------
-module SEGASYS1_PRGROMT2
+module SEGASYS1_DECT1
 (
 	input 				clk,
 
-	input					mrom_m1,
-	input     [15:0]	mrom_ad,
+	input					mrom_m1,		// connect to CPU
+	input     [14:0]	mrom_ad,
 	output reg [7:0]	mrom_dt,
+
+	output    [14:0]	rad,			// connect to ROM
+	input		  [7:0]	rdt,
+
+	input					ROMCL,		// Downloaded ROM image
+	input     [24:0]	ROMAD,
+	input	     [7:0]	ROMDT,
+	input					ROMEN
+);
+
+reg  [15:0] madr;
+wire  [7:0] mdat = rdt;
+
+wire			f		  = mdat[7];
+wire  [7:0] xorv    = { f, 1'b0, f, 1'b0, f, 3'b000 }; 
+wire  [7:0] andv    = ~(8'hA8);
+wire  [1:0] decidx0 = { mdat[5],  mdat[3] } ^ { f, f };
+wire  [6:0] decidx  = { madr[12], madr[8], madr[4], madr[0], ~madr[15], decidx0 };
+wire  [7:0] dectbl;
+wire  [7:0] mdec    = ( mdat & andv ) | ( dectbl ^ xorv );
+
+DLROM #(7,8) dect( clk, decidx, dectbl, ROMCL,ROMAD,ROMDT,ROMEN & `EN_DEC1TBL );
+
+reg phase = 1'b0;
+always @( negedge clk ) begin
+	if ( phase ) mrom_dt <= mdec;
+	else madr <= { mrom_m1, mrom_ad };
+	phase <= ~phase;
+end
+
+assign rad = madr[14:0];
+
+endmodule
+
+
+//----------------------------------------
+//  Program ROM Decryptor (Type 2)
+//----------------------------------------
+module SEGASYS1_DECT2
+(
+	input 				clk,
+
+	input					mrom_m1,		// connect to CPU
+	input     [14:0]	mrom_ad,
+	output reg [7:0]	mrom_dt,
+
+	output    [14:0]	rad,			// connect to ROM
+	input		  [7:0]	rdt,
 
 	input					ROMCL,		// Downloaded ROM image
 	input     [24:0]	ROMAD,
@@ -108,55 +149,22 @@ input [7:0] v;
 
 endfunction
 
-
-reg [16:0] madr;
-wire [7:0] rd0, rd1;
+reg [15:0] madr;
 
 wire [7:0] sd,xd;
-wire [6:0] ix = {madr[14],madr[12],madr[9],madr[6],madr[3],madr[0],~madr[16]};
+wire [6:0] ix = {madr[14],madr[12],madr[9],madr[6],madr[3],madr[0],~madr[15]};
 
-DLROM #(7,8)  xort(clk,ix,xd, ROMCL,ROMAD,ROMDT,ROMEN & `EN_DEC2XOR);
-DLROM #(7,8)  swpt(clk,ix,sd, ROMCL,ROMAD,ROMDT,ROMEN & `EN_DEC2SWP);
-
-DLROM #(15,8) rom0(clk,madr[14:0],rd0, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU0);	// ($0000-$7FFF encrypted)
-DLROM #(14,8) rom1(clk,madr[13:0],rd1, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU8);	// ($8000-$BFFF non-encrypted)
+DLROM #(7,8) xort(clk,ix,xd, ROMCL,ROMAD,ROMDT,ROMEN & `EN_DEC2XOR);
+DLROM #(7,8) swpt(clk,ix,sd, ROMCL,ROMAD,ROMDT,ROMEN & `EN_DEC2SWP);
 
 reg phase = 1'b0;
 always @( negedge clk ) begin
-	if ( phase ) mrom_dt <= madr[15] ? rd1 : (bswp(sd,rd0) ^ xd);
+	if ( phase ) mrom_dt <= (bswp(sd,rdt) ^ xd);
 	else madr <= { mrom_m1, mrom_ad };
 	phase <= ~phase;
 end
 
-endmodule
-
-
-//----------------------------------
-//  Program ROM (Decrypted)
-//----------------------------------
-module SEGASYS1_PRGROMD
-(
-	input 				clk,
-
-	input					mrom_m1,
-	input     [15:0]	mrom_ad,
-	output 	  [7:0]	mrom_dt,
-
-	input					ROMCL,		// Downloaded ROM image
-	input     [24:0]	ROMAD,
-	input	     [7:0]	ROMDT,
-	input					ROMEN
-);
-
-reg madr;
-always @(posedge clk) madr <= mrom_ad[15];
-
-wire [7:0] md0,md1;
-
-DLROM #(15,8) rom0( clk, mrom_ad[14:0], md0, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU0 );
-DLROM #(14,8) rom1( clk, mrom_ad[13:0], md1, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU8 );
-
-assign mrom_dt = madr ? md1 : md0;
+assign rad = madr[14:0];
 
 endmodule
 
