@@ -54,7 +54,7 @@ SEGASYS1_MAIN Main (
 
 // Video
 SEGASYS1_VIDEO Video (
-	.VCLKx8(clk48M),.VCLKx4(clk24M),.VCLKx2(clk12M),.VCLK(clk6M),
+	.RESET(reset),.VCLKx8(clk48M),.VCLKx4(clk24M),.VCLKx2(clk12M),.VCLK(clk6M),
 	.PH(PH),.PV(PV),.VBLK(VBLK),.RGB8(POUT),.PALDSW(1'b0),
 
 	.cpu_cl(CPUCLn),.cpu_ad(CPUAD),.cpu_wr(CPUWR),.cpu_dw(CPUDO),

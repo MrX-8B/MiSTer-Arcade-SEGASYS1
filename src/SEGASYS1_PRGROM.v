@@ -70,16 +70,7 @@ module SEGASYS1_PRGROMT2
 	input					ROMEN
 );
 
-function [7:0] bsw;
-input [7:0] v;
-input [2:0] a;
-input [2:0] b;
-input [2:0] c;
-input [2:0] d;
-
-	bsw = {v[7],v[a],v[5],v[b],v[3],v[c],v[1],v[d]};
-
-endfunction
+`define bsw(A,B,C,D)	{v[7],v[A],v[5],v[B],v[3],v[C],v[1],v[D]}
 
 function [7:0] bswp;
 input [4:0] m;
@@ -87,30 +78,30 @@ input [7:0] v;
 
    case (m)
 
-	  0: bswp = bsw(v,6,4,2,0);
-	  1: bswp = bsw(v,4,6,2,0);
-     2: bswp = bsw(v,2,4,6,0);
-     3: bswp = bsw(v,0,4,2,6);
-	  4: bswp = bsw(v,6,2,4,0);
-     5: bswp = bsw(v,6,0,2,4);
-     6: bswp = bsw(v,6,4,0,2);
-	  7: bswp = bsw(v,2,6,4,0);
-	  8: bswp = bsw(v,4,2,6,0);
-     9: bswp = bsw(v,4,6,0,2);
-    10: bswp = bsw(v,6,0,4,2);
-    11: bswp = bsw(v,0,6,4,2);
-	 12: bswp = bsw(v,4,0,6,2);
-    13: bswp = bsw(v,0,4,6,2);
-    14: bswp = bsw(v,6,2,0,4);
-    15: bswp = bsw(v,2,6,0,4);
-    16: bswp = bsw(v,0,6,2,4);
-    17: bswp = bsw(v,2,0,6,4);
-    18: bswp = bsw(v,0,2,6,4);
-    19: bswp = bsw(v,4,2,0,6);
-	 20: bswp = bsw(v,2,4,0,6);
-    21: bswp = bsw(v,4,0,2,6);
-    22: bswp = bsw(v,2,0,4,6);
-    23: bswp = bsw(v,0,2,4,6);
+	  0: bswp = `bsw(6,4,2,0);
+	  1: bswp = `bsw(4,6,2,0);
+     2: bswp = `bsw(2,4,6,0);
+     3: bswp = `bsw(0,4,2,6);
+	  4: bswp = `bsw(6,2,4,0);
+     5: bswp = `bsw(6,0,2,4);
+     6: bswp = `bsw(6,4,0,2);
+	  7: bswp = `bsw(2,6,4,0);
+	  8: bswp = `bsw(4,2,6,0);
+     9: bswp = `bsw(4,6,0,2);
+    10: bswp = `bsw(6,0,4,2);
+    11: bswp = `bsw(0,6,4,2);
+	 12: bswp = `bsw(4,0,6,2);
+    13: bswp = `bsw(0,4,6,2);
+    14: bswp = `bsw(6,2,0,4);
+    15: bswp = `bsw(2,6,0,4);
+    16: bswp = `bsw(0,6,2,4);
+    17: bswp = `bsw(2,0,6,4);
+    18: bswp = `bsw(0,2,6,4);
+    19: bswp = `bsw(4,2,0,6);
+	 20: bswp = `bsw(2,4,0,6);
+    21: bswp = `bsw(4,0,2,6);
+    22: bswp = `bsw(2,0,4,6);
+    23: bswp = `bsw(0,2,4,6);
 
     default: bswp = 0;
    endcase
@@ -118,21 +109,24 @@ input [7:0] v;
 endfunction
 
 
+reg [16:0] madr;
 wire [7:0] rd0, rd1;
-reg		  a15;
 
 wire [7:0] sd,xd;
-wire [6:0] ix = {mrom_ad[14],mrom_ad[12],mrom_ad[9],mrom_ad[6],mrom_ad[3],mrom_ad[0],mrom_m1};
-wire [7:0] dd = bswp(sd,rd0) ^ xd;
+wire [6:0] ix = {madr[14],madr[12],madr[9],madr[6],madr[3],madr[0],~madr[16]};
 
 DLROM #(7,8)  xort(clk,ix,xd, ROMCL,ROMAD,ROMDT,ROMEN & `EN_DEC2XOR);
 DLROM #(7,8)  swpt(clk,ix,sd, ROMCL,ROMAD,ROMDT,ROMEN & `EN_DEC2SWP);
 
-DLROM #(15,8) rom0(clk,mrom_ad[14:0],rd0, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU0);	// ($0000-$7FFF encrypted)
-DLROM #(14,8) rom1(clk,mrom_ad[13:0],rd1, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU8);	// ($8000-$BFFF non-encrypted)
+DLROM #(15,8) rom0(clk,madr[14:0],rd0, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU0);	// ($0000-$7FFF encrypted)
+DLROM #(14,8) rom1(clk,madr[13:0],rd1, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU8);	// ($8000-$BFFF non-encrypted)
 
-always @(posedge clk) a15 <= mrom_ad[15];
-always @(negedge clk) mrom_dt <= a15 ? rd1 : dd;
+reg phase = 1'b0;
+always @( negedge clk ) begin
+	if ( phase ) mrom_dt <= madr[15] ? rd1 : (bswp(sd,rd0) ^ xd);
+	else madr <= { mrom_m1, mrom_ad };
+	phase <= ~phase;
+end
 
 endmodule
 

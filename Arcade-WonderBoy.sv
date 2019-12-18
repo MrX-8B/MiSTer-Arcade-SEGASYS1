@@ -72,7 +72,7 @@ assign HDMI_ARY = status[1] ? 8'd9  : 8'd3;
 `include "build_id.v" 
 localparam CONF_STR = {
 	"A.WonderBoy;;",
-	"F,rom;", // allow loading of alternate ROMs
+	"F0,rom;", // allow loading of alternate ROMs
 	"-;",
 	"O1,Aspect Ratio,Original,Wide;",
 	"O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",

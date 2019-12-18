@@ -14,6 +14,8 @@
 
 module SEGASYS1_VIDEO
 (
+	input				RESET,
+
 	input				VCLKx8,
 	input				VCLKx4,
 	input				VCLKx2,
@@ -61,6 +63,8 @@ wire [15:0]	scrx;
 wire  [7:0] scry;
 
 VIDCPUINTF intf(
+	RESET,
+
 	cpu_cl,
 	cpu_ad, cpu_wr, cpu_dw,
 	cpu_rd, cpu_dr,
@@ -136,6 +140,8 @@ endmodule
 //----------------------------------
 module VIDCPUINTF
 (
+	input				RESET,
+
 	input				cpu_cl,
 	input	  [15:0]	cpu_ad,
 	input				cpu_wr,
@@ -211,14 +217,20 @@ VIDADEC adecs(
 );
 
 // Scroll Register
-always @ ( posedge cpu_cl ) begin
-	if (cpu_wr_scrreg) begin
-		case({cpu_ad[6],cpu_ad[0]})
-		2'b11: scrx[15:8] <= cpu_dw;
-		2'b10: scrx[ 7:0] <= cpu_dw;
-		2'b01: scry <= cpu_dw;
-		2'b00: ;
-		endcase
+always @ ( posedge cpu_cl or posedge RESET) begin
+	if (RESET) begin
+		scrx <= 0;
+		scry <= 0;
+	end
+	else begin
+		if (cpu_wr_scrreg) begin
+			case({cpu_ad[6],cpu_ad[0]})
+			2'b11: scrx[15:8] <= cpu_dw;
+			2'b10: scrx[ 7:0] <= cpu_dw;
+			2'b01: scry <= cpu_dw;
+			2'b00: ;
+			endcase
+		end
 	end
 end
 
