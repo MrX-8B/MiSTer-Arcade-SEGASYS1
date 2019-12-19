@@ -197,6 +197,8 @@ reg btn_trig1_2 = 0;
 reg btn_trig2_2 = 0;
 
 
+wire m_up2     = btn_up_2    | joystk2[3];
+wire m_down2   = btn_down_2  | joystk2[2];
 wire m_left2   = btn_left_2  | joystk2[1];
 wire m_right2  = btn_right_2 | joystk2[0];
 wire m_trig21  = btn_trig1_2 | joystk2[4];
@@ -205,6 +207,8 @@ wire m_trig22  = btn_trig2_2 | joystk2[5];
 wire m_start1  = btn_one_player  | joystk1[6] | joystk2[6] | btn_start_1;
 wire m_start2  = btn_two_players | joystk1[7] | joystk2[7] | btn_start_2;
 
+wire m_up1     = btn_up      | joystk1[3] | (bCabinet ? 1'b0 : m_up2);
+wire m_down1   = btn_down    | joystk1[2] | (bCabinet ? 1'b0 : m_down2);
 wire m_left1   = btn_left    | joystk1[1] | (bCabinet ? 1'b0 : m_left2);
 wire m_right1  = btn_right   | joystk1[0] | (bCabinet ? 1'b0 : m_right2);
 wire m_trig11  = btn_trig1   | joystk1[4] | (bCabinet ? 1'b0 : m_trig21);
@@ -266,8 +270,8 @@ assign AUDIO_S = 0; // unsigned PCM
 
 wire iRST = RESET | status[0] | buttons[1] | ioctl_download;
 
-wire [7:0] INP0 = ~{m_left1,m_right1,3'd0,m_trig12,m_trig11,1'd0}; 
-wire [7:0] INP1 = ~{m_left2,m_right2,3'd0,m_trig22,m_trig21,1'd0}; 
+wire [7:0] INP0 = ~{m_left1,m_right1,m_up1,m_down1,1'd0,m_trig12,m_trig11,1'd0}; 
+wire [7:0] INP1 = ~{m_left2,m_right2,m_up2,m_down2,1'd0,m_trig22,m_trig21,1'd0}; 
 wire [7:0] INP2 = ~{2'd0,m_start2,m_start1,3'd0, m_coin}; 
 
 SEGASYSTEM1 GameCore ( 
