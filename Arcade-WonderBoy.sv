@@ -3,7 +3,7 @@
 //
 //                          Copyright (c) 2019 MiSTer-X
 //=========================================================
-//`define UNIVERSAL
+`define UNIVERSAL
 
 module emu
 (
