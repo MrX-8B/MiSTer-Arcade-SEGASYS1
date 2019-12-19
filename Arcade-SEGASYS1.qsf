@@ -360,7 +360,7 @@ set_global_assignment -name VERILOG_FILE src/SEGASYS1_SPRITE.v
 set_global_assignment -name VERILOG_FILE src/SEGASYS1_SOUND.v
 set_global_assignment -name VERILOG_FILE src/SEGASYS1_MAIN.v
 set_global_assignment -name VERILOG_FILE src/SEGASYS1.v
-set_global_assignment -name SYSTEMVERILOG_FILE "Arcade-WonderBoy.sv"
+set_global_assignment -name SYSTEMVERILOG_FILE "Arcade-SEGASYS1.sv"
 set_global_assignment -name QIP_FILE src/T80/T80.qip
 set_global_assignment -name QIP_FILE src/DPRAM1024_11B.qip
 set_global_assignment -name QIP_FILE src/DPRAM1024_1B.qip
