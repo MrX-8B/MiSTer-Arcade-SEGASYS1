@@ -1,0 +1,35 @@
+<misterromdescription>
+  <rbf>SEGASYS1</rbf>
+  <rom index="0" zip="spatter.zip" md5="b013b89a7342bb500df196f010967232">
+        <part zip="ssanchan.zip" name="epr-6310.116"/>
+        <part zip="ssanchan.zip" name="epr-6311.109"/>
+        <part zip="ssanchan.zip" name="epr-6312.96"/>
+        <part name="epr-6316.120"/>
+        <part name="epr-6316.120"/>
+        <part name="epr-6306.04"/>
+        <part name="epr-6308.117"/>
+        <part name="epr-6307.05"/>
+        <part name="epr-6309.110"/>
+        <part name="epr-6328.62"/>
+        <part name="epr-6326.64"/>
+        <part name="epr-6324.66"/>
+        <part zip="ssanchan.zip" name="epr-6327.61"/>
+        <part zip="ssanchan.zip" name="epr-6325.63"/>
+        <part zip="ssanchan.zip" name="epr-6323.65"/>
+        <part name="pr-5317.76"/>
+        <part>
+ 88 08 80 00 00 08 20 28 28 a8 08 88 28 a8 08 88
+ 28 20 a8 a0 28 20 a8 a0 88 08 80 00 88 08 80 00
+ 00 08 20 28 88 08 80 00 a0 80 20 00 80 88 00 08
+ 88 08 80 00 a0 80 20 00 88 08 80 00 28 20 a8 a0
+ 28 a8 08 88 80 88 00 08 80 88 00 08 00 08 20 28
+ 28 20 a8 a0 28 a8 08 88 00 08 20 28 80 a0 88 a8
+ 80 88 00 08 a0 80 20 00 80 a0 88 a8 a0 80 20 00
+ a0 80 20 00 80 a0 88 a8 28 20 a8 a0 00 08 20 28
+</part>
+  </rom>
+  <rom index="1">
+        <part>06</part>
+  </rom>
+</misterromdescription>
+
