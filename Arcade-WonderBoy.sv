@@ -1,9 +1,8 @@
 //=========================================================
-//  Arcade: Wonder Boy  for MiSTer
+//  Arcade: SEGA SYSTEM 1  for MiSTer
 //
 //                          Copyright (c) 2019 MiSTer-X
 //=========================================================
-`define UNIVERSAL
 
 module emu
 (
@@ -72,42 +71,8 @@ assign HDMI_ARY = status[1] ? 8'd9  : 8'd3;
 
 `include "build_id.v" 
 
-`ifndef UNIVERSAL
-localparam CONF_STR = {
-	"A.WonderBoy;;",
-	"F0,rom;", // allow loading of alternate ROMs
-	"-;",
-	"O1,Aspect Ratio,Original,Wide;",
-	"O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
-	"-;",
-	"O89,Lives,3,4,5,Endless;",
-	"OA,Extend,30k/100k/170k/240k,30k/120k/210k/300k;",
-	"OC,Difficulty,Easy,Hard;",
-	"OB,Allow Continue,Yes,No;",
-	"-;",
-	"OD,Demo Sound,On,Off;",
-	"-;",
-	"R0,Reset;",
-	"J1,Trig1,Trig2,Start 1P,Start 2P,Coin;",
-	"V,v",`BUILD_DATE
-};
-
-wire bCabinet = 1'b0;
-
-wire [1:0] dsLives  = ~status[9:8];
-wire 		  dsExtend = ~status[10]; 
-wire		  dsAlwCnt = ~status[11];
-wire       dsDifclt = ~status[12]; 
-wire       dsDmoSnd =  status[13]; 
-
-wire [7:0] DSW0 = 8'hFF;
-wire [7:0] DSW1 = {1'b1,dsDifclt,dsAlwCnt,dsExtend,dsLives,dsDmoSnd,bCabinet};
-
-`else
-
 localparam CONF_STR = {
 	"A.SEGASYS1;;",
-	"F0,rom;", // allow loading of alternate ROMs
 	"-;",
 	"O1,Aspect Ratio,Original,Wide;",
 	"O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
@@ -122,7 +87,6 @@ wire bCabinet = 1'b0;
 wire [7:0] DSW0 = 8'hFF;
 wire [7:0] DSW1 = 8'hFE;
 
-`endif
 
 ////////////////////   CLOCKS   ///////////////////
 
