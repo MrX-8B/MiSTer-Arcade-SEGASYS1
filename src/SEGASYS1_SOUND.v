@@ -77,7 +77,7 @@ dataselector3 scpudisel(
 
 
 SndPlayReq sndreq (
-	clk4M, reset,
+	clk8M, reset,
 	sndno, sndstart,
 	cpu_irq, cpu_irqa,
 	cpu_nmi, cpu_nmia,
@@ -167,7 +167,7 @@ endmodule
 //----------------------------------
 module SndPlayReq
 (
-	input			clk4M,
+	input			clk8M,
 	input			reset,
 
 	input	[7:0]	sndno,
@@ -182,10 +182,10 @@ module SndPlayReq
 	output reg [7:0] comlatch
 );
 
-reg [15:0]	timercnt;
+reg [16:0]	timercnt;
 reg			psndstart;
 
-always @( posedge clk4M or posedge reset ) begin
+always @( posedge clk8M or posedge reset ) begin
 	if ( reset ) begin
 		cpu_nmi   <= 0;
 		cpu_irq   <= 0;
@@ -203,10 +203,10 @@ always @( posedge clk4M or posedge reset ) begin
 		end
 		psndstart <= sndstart;
 
-		if ( timercnt == 16666 ) cpu_irq <= 1'b1;
 		if ( timercnt == 33333 ) cpu_irq <= 1'b1;
+		if ( timercnt == 66666 ) cpu_irq <= 1'b1;
 
-		timercnt <= ( timercnt == 33333 ) ? 0 : (timercnt+1);	// 1/60sec
+		timercnt <= ( timercnt == 66666 ) ? 0 : (timercnt+1);	// 1/60sec
 	end
 end
 
