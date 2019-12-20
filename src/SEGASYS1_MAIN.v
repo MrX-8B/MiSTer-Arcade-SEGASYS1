@@ -41,9 +41,6 @@ assign 		CPUCLn  = ~CPUCL;
 wire  [7:0]	CPUDI;
 wire			CPURD;
 
-wire			cpu_cs_video;
-wire  [7:0]	cpu_rd_video;
-
 wire	cpu_m1;
 wire	cpu_mreq, cpu_iorq;
 wire	_cpu_rd, _cpu_wr;
@@ -72,7 +69,7 @@ assign		SNDRQ = (CPUAD[4:0] == 5'b1_1000) & cpu_iorq & _cpu_wr;
 // Input Port
 wire			cpu_cs_port;
 wire [7:0]	cpu_rd_port;
-SEGASYS1_IPORT port(CPUCLn,CPUAD,cpu_iorq, INP0,INP1,INP2, DSW0,DSW1, cpu_cs_port,cpu_rd_port);
+SEGASYS1_IPORT port(CPUAD,cpu_iorq, INP0,INP1,INP2, DSW0,DSW1, cpu_cs_port,cpu_rd_port);
 
 
 // Program ROM
@@ -121,7 +118,6 @@ endmodule
 
 module SEGASYS1_IPORT
 (
-	input				CPUCL,
 	input [15:0]	CPUAD,
 	input				CPUIO,
 
@@ -154,10 +150,6 @@ dataselector5 dsel(
 );
 
 assign DV = cs_port1|cs_port2|cs_portS|cs_portA|cs_portB;
-
-//reg [7:0] OD;
-//always @(posedge CPUCL) OD <= inp;
-
 assign OD = inp;
 
 endmodule
