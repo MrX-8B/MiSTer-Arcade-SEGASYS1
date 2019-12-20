@@ -128,7 +128,7 @@ always @ ( negedge VCLKx4 ) begin
 			0: begin
 				hitr    <= 0;
 				we      <= 1'b0;
-				sprcoll <= 0;
+				sprcoll <= 1'b0;
 				phaseHD <= ( hits > 0 ) ? 1 : 15;
 			end
 
@@ -230,6 +230,8 @@ always @ ( negedge VCLKx4 ) begin
 
 			// process next hit sprite
 			14: begin
+				sprcoll <= 1'b0;
+				we <= 1'b0;
 				phaseHD <= ( hitr == (hits-1) ) ? 15 : 1;
 				hitr <= hitr+1;
 			end

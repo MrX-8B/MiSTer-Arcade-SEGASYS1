@@ -26,7 +26,8 @@ module SEGASYS1_MAIN
 	output  [7:0]	CPUDO,
 	output		  	CPUWR,
 	
-	output  reg		SNDRQ,
+	output reg		  SNDRQ,
+	output reg [7:0] SNDNO,
 	
 	input				ROMCL,		// Downloaded ROM image
 	input   [24:0]	ROMAD,
@@ -93,15 +94,27 @@ SRAM_4096 mainram(CPUCLn, CPUAD[11:0], cpu_rd_mram, cpu_cs_mram & CPUWR, CPUDO )
 
 
 // Video mode latch & Sound Request
-reg [7:0] vidmode;
+reg [7:0] VIDMD;
 always @(posedge CPUCLn or posedge RESET) begin
 	if (RESET) begin
-		vidmode <= 0;
+		VIDMD <= 0;
 		SNDRQ <= 0;
+		SNDNO <= 0;
 	end
 	else begin
-		if ((CPUAD[4:0] == 5'b1_1001) & cpu_iorq & _cpu_wr) vidmode <= CPUDO;
-		SNDRQ <= (CPUAD[4:0] == 5'b1_1000) & cpu_iorq & _cpu_wr;
+		if (cpu_iorq & _cpu_wr) begin
+			// Z80 PIO
+			if (CPUAD[4:0] == 5'b1_1001) begin VIDMD <= CPUDO; end else
+			if (CPUAD[4:0] == 5'b1_1000) begin SNDNO <= CPUDO; SNDRQ <= 1'b1; end else
+
+			// 8255
+			if (CPUAD[4:0] == 5'b1_0000) begin SNDNO <= CPUDO;    end else
+			if (CPUAD[4:0] == 5'b1_0001) begin VIDMD <= CPUDO;    end else
+			if (CPUAD[4:0] == 5'b1_0010) begin SNDRQ <= CPUDO[7]; end else
+
+			SNDRQ <= 1'b0;
+		end
+		else SNDRQ <= 1'b0;
 	end
 end
 

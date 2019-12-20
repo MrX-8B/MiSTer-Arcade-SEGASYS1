@@ -36,7 +36,7 @@ CLKGEN clks( clk48M, clk24M, clk12M, clk6M, clk3M, clk8M );
 // CPU
 wire 			CPUCLn;
 wire [15:0] CPUAD;
-wire  [7:0] CPUDO,VIDDO;
+wire  [7:0] CPUDO,VIDDO,SNDNO;
 wire			CPUWR,VIDCS,VBLK;
 wire			SNDRQ;
 
@@ -47,7 +47,7 @@ SEGASYS1_MAIN Main (
 	.CLK48M(clk48M),.CLK3M(clk3M),
 	.CPUCLn(CPUCLn),.CPUAD(CPUAD),.CPUDO(CPUDO),.CPUWR(CPUWR),
 	.VBLK(VBLK),.VIDCS(VIDCS),.VIDDO(VIDDO),
-	.SNDRQ(SNDRQ),
+	.SNDRQ(SNDRQ),.SNDNO(SNDNO),
 	
 	.ROMCL(ROMCL),.ROMAD(ROMAD),.ROMDT(ROMDT),.ROMEN(ROMEN)
 );
@@ -66,7 +66,7 @@ assign PCLK = clk6M;
 
 // Sound
 SEGASYS1_SOUND Sound(
-	clk8M, reset, CPUDO, SNDRQ, SOUT,
+	clk8M, reset, SNDNO, SNDRQ, SOUT,
 	ROMCL, ROMAD, ROMDT, ROMEN
 );
 

@@ -252,16 +252,15 @@ DPRAM2048_8_16 sprram(
 
 
 // Collision RAM (Mixer & Sprite)
-wire			noclip = 1'b1;
 wire [7:0]	cpu_rd_mixcoll;
 wire [7:0]	cpu_rd_sprcoll;
 COLLRAM_M mixc(
 	cpu_cl,cpu_ad[5:0],cpu_wr_mixcoll,cpu_wr_mixcollclr,cpu_rd_mixcoll,
-	VCLKx4,mixcoll_ad,mixcoll & noclip
+	VCLKx4,mixcoll_ad,mixcoll
 );
 COLLRAM_S sprc(
 	cpu_cl,cpu_ad[9:0],cpu_wr_sprcoll,cpu_wr_sprcollclr,cpu_rd_sprcoll,
-	VCLKx4,sprcoll_ad,sprcoll & noclip
+	VCLKx4,sprcoll_ad,sprcoll
 );
 
 
@@ -368,7 +367,7 @@ module VIDHVGEN
 	output			VBLK
 );
 	
-assign VBLK = (PV == 8'd224) & (PH <= 8'd64);
+assign VBLK = (PV == 9'd224) & (PH <= 9'd64);
 
 assign HPOS = PH+1;
 assign VPOS = PV;
