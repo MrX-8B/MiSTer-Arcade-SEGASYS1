@@ -68,19 +68,11 @@ assign		CPURD = _cpu_rd & cpu_mreq;
 
 assign		SNDRQ = (CPUAD[4:0] == 5'b1_1000) & cpu_iorq & _cpu_wr;
 
-wire			cpu_cs_port1 =  (CPUAD[4:2] == 3'b0_00) & cpu_iorq;
-wire			cpu_cs_port2 =  (CPUAD[4:2] == 3'b0_01) & cpu_iorq;
-wire			cpu_cs_portS =  (CPUAD[4:2] == 3'b0_10) & cpu_iorq;
-wire			cpu_cs_portA =  (CPUAD[4:2] == 3'b0_11) & ~CPUAD[0] & cpu_iorq;
-wire			cpu_cs_portB =(((CPUAD[4:2] == 3'b0_11) &  CPUAD[0]) | (CPUAD[4:0] == 5'b1_0000)) & cpu_iorq;
-wire			cpu_cs_portI =  (CPUAD[4:2] == 3'b1_10) & cpu_iorq;
 
-wire [7:0]	cpu_rd_port1 = INP0; 
-wire [7:0]	cpu_rd_port2 = INP1; 
-wire [7:0]	cpu_rd_portS = INP2; 
-
-wire [7:0]	cpu_rd_portA = DSW0;
-wire [7:0]	cpu_rd_portB = DSW1;
+// Input Port
+wire			cpu_cs_port;
+wire [7:0]	cpu_rd_port;
+SEGASYS1_IPORT port(CPUCLn,CPUAD,cpu_iorq, INP0,INP1,INP2, DSW0,DSW1, cpu_cs_port,cpu_rd_port);
 
 
 // Program ROM
@@ -114,20 +106,59 @@ always @(posedge CPUCLn) begin
 end
 
 
-dataselector10 mcpudisel(
+dataselector5 mcpudisel(
 	CPUDI,
-	VIDCS, VIDDO,
-	cpu_cs_port1, cpu_rd_port1,
-	cpu_cs_port2, cpu_rd_port2,
-	cpu_cs_portS, cpu_rd_portS,
-	cpu_cs_portA, cpu_rd_portA,
-	cpu_cs_portB, cpu_rd_portB,
+	VIDCS,		  VIDDO,
+	cpu_cs_port,  cpu_rd_port,
 	cpu_cs_mram,  cpu_rd_mram,
 	cpu_cs_mrom0, cpu_rd_mrom0,
 	cpu_cs_mrom1, cpu_rd_mrom1,
-	1'b0, 8'd0,
 	8'hFF
 );
+
+endmodule
+
+
+module SEGASYS1_IPORT
+(
+	input				CPUCL,
+	input [15:0]	CPUAD,
+	input				CPUIO,
+
+	input  [7:0]	INP0,
+	input  [7:0]	INP1,
+	input  [7:0]	INP2,
+
+	input  [7:0]	DSW0,
+	input  [7:0]	DSW1,
+
+	output			DV,
+	output [7:0]	OD
+);
+
+wire cs_port1 =  (CPUAD[4:2] == 3'b0_00) & CPUIO;
+wire cs_port2 =  (CPUAD[4:2] == 3'b0_01) & CPUIO;
+wire cs_portS =  (CPUAD[4:2] == 3'b0_10) & CPUIO;
+wire cs_portA =  (CPUAD[4:2] == 3'b0_11) & ~CPUAD[0] & CPUIO;
+wire cs_portB =(((CPUAD[4:2] == 3'b0_11) &  CPUAD[0]) | (CPUAD[4:0] == 5'b1_0000)) & CPUIO;
+
+wire [7:0] inp;
+dataselector5 dsel(
+	inp,
+	cs_port1,INP0,
+	cs_port2,INP1,
+	cs_portS,INP2,
+	cs_portA,DSW0,
+	cs_portB,DSW1,
+	8'hFF
+);
+
+assign DV = cs_port1|cs_port2|cs_portS|cs_portA|cs_portB;
+
+//reg [7:0] OD;
+//always @(posedge CPUCL) OD <= inp;
+
+assign OD = inp;
 
 endmodule
 

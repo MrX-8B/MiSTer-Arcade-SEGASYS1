@@ -259,14 +259,9 @@ module dataselector3(
 
 	output [7:0] oDATA,
 
-	input iSEL0,
-	input [7:0] iDATA0,
-
-	input iSEL1,
-	input [7:0] iDATA1,
-
-	input iSEL2,
-	input [7:0] iDATA2,
+	input iSEL0, input [7:0] iDATA0,
+	input iSEL1, input [7:0] iDATA1,
+	input iSEL2, input [7:0] iDATA2,
 
 	input [7:0] dData
 );
@@ -286,11 +281,8 @@ module dataselector2_11(
 
 	output [10:0] oDATA,
 
-	input iSEL0,
-	input [10:0] iDATA0,
-
-	input iSEL1,
-	input [10:0] iDATA1,
+	input iSEL0, input [10:0] iDATA0,
+	input iSEL1, input [10:0] iDATA1,
 
 	input [10:0] dData
 );
@@ -303,41 +295,17 @@ endmodule
 
 
 //----------------------------------
-//  Data Selector 10 to 1
+//  Data Selector 5 to 1
 //----------------------------------
-module dataselector10(
+module dataselector5(
 
 	output [7:0] oDATA,
 
-	input iSEL0,
-	input [7:0] iDATA0,
-
-	input iSEL1,
-	input [7:0] iDATA1,
-
-	input iSEL2,
-	input [7:0] iDATA2,
-
-	input iSEL3,
-	input [7:0] iDATA3,
-
-	input iSEL4,
-	input [7:0] iDATA4,
-
-	input iSEL5,
-	input [7:0] iDATA5,
-
-	input iSEL6,
-	input [7:0] iDATA6,
-
-	input iSEL7,
-	input [7:0] iDATA7,
-
-	input iSEL8,
-	input [7:0] iDATA8,
-
-	input iSEL9,
-	input [7:0] iDATA9,
+	input iSEL0, input [7:0] iDATA0,
+	input iSEL1, input [7:0] iDATA1,
+	input iSEL2, input [7:0] iDATA2,
+	input iSEL3, input [7:0] iDATA3,
+	input iSEL4, input [7:0] iDATA4,
 
 	input [7:0] dData
 );
@@ -347,14 +315,10 @@ assign oDATA = iSEL0 ? iDATA0 :
 					iSEL2 ? iDATA2 :
 					iSEL3 ? iDATA3 :
 					iSEL4 ? iDATA4 :
-					iSEL5 ? iDATA5 :
-					iSEL6 ? iDATA6 :
-					iSEL7 ? iDATA7 :
-					iSEL8 ? iDATA8 :
-					iSEL9 ? iDATA9 :
 					dData;
 
 endmodule
+
 
 //----------------------------------
 //  Data Selector 6 to 1
@@ -363,23 +327,12 @@ module dataselector6(
 
 	output [7:0] oDATA,
 
-	input iSEL0,
-	input [7:0] iDATA0,
-
-	input iSEL1,
-	input [7:0] iDATA1,
-
-	input iSEL2,
-	input [7:0] iDATA2,
-
-	input iSEL3,
-	input [7:0] iDATA3,
-
-	input iSEL4,
-	input [7:0] iDATA4,
-
-	input iSEL5,
-	input [7:0] iDATA5,
+	input iSEL0, input [7:0] iDATA0,
+	input iSEL1, input [7:0] iDATA1,
+	input iSEL2, input [7:0] iDATA2,
+	input iSEL3, input [7:0] iDATA3,
+	input iSEL4, input [7:0] iDATA4,
+	input iSEL5, input [7:0] iDATA5,
 
 	input [7:0] dData
 );
@@ -393,5 +346,4 @@ assign oDATA = iSEL0 ? iDATA0 :
 					dData;
 
 endmodule
-
 
