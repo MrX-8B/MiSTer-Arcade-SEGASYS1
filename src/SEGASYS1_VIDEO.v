@@ -23,7 +23,8 @@ module SEGASYS1_VIDEO
 
 	input		[8:0]	PH,
 	input		[8:0]	PV,
-
+	input				VFLP,
+	
 	output			VBLK,
 	output   [7:0]	RGB8,
 
@@ -41,6 +42,7 @@ module SEGASYS1_VIDEO
 	input    [7:0]	ROMDT,
 	input				ROMEN
 );
+
 
 // CPU Interface
 wire [10:0] palno;

@@ -36,7 +36,7 @@ CLKGEN clks( clk48M, clk24M, clk12M, clk6M, clk3M, clk8M );
 // CPU
 wire 			CPUCLn;
 wire [15:0] CPUAD;
-wire  [7:0] CPUDO,VIDDO,SNDNO;
+wire  [7:0] CPUDO,VIDDO,SNDNO,VIDMD;
 wire			CPUWR,VIDCS,VBLK;
 wire			SNDRQ;
 
@@ -48,20 +48,23 @@ SEGASYS1_MAIN Main (
 	.CPUCLn(CPUCLn),.CPUAD(CPUAD),.CPUDO(CPUDO),.CPUWR(CPUWR),
 	.VBLK(VBLK),.VIDCS(VIDCS),.VIDDO(VIDDO),
 	.SNDRQ(SNDRQ),.SNDNO(SNDNO),
+	.VIDMD(VIDMD),
 	
 	.ROMCL(ROMCL),.ROMAD(ROMAD),.ROMDT(ROMDT),.ROMEN(ROMEN)
 );
 
 // Video
+wire [7:0] OPIX;
 SEGASYS1_VIDEO Video (
 	.RESET(reset),.VCLKx8(clk48M),.VCLKx4(clk24M),.VCLKx2(clk12M),.VCLK(clk6M),
-	.PH(PH),.PV(PV),.VBLK(VBLK),.RGB8(POUT),.PALDSW(1'b0),
+	.PH(PH),.PV(PV),.VFLP(VIDMD[7]),.VBLK(VBLK),.RGB8(OPIX),.PALDSW(1'b0),
 
 	.cpu_cl(CPUCLn),.cpu_ad(CPUAD),.cpu_wr(CPUWR),.cpu_dw(CPUDO),
 	.cpu_rd(VIDCS),.cpu_dr(VIDDO),
 
 	.ROMCL(ROMCL),.ROMAD(ROMAD),.ROMDT(ROMDT),.ROMEN(ROMEN)
 );
+assign POUT = VIDMD[4] ? 0 : OPIX;
 assign PCLK = clk6M;
 
 // Sound

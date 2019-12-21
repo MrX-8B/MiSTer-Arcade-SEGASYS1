@@ -29,6 +29,8 @@ module SEGASYS1_MAIN
 	output reg		  SNDRQ,
 	output reg [7:0] SNDNO,
 	
+	output reg [7:0] VIDMD,
+
 	input				ROMCL,		// Downloaded ROM image
 	input   [24:0]	ROMAD,
 	input	  [7:0]	ROMDT,
@@ -94,7 +96,9 @@ SRAM_4096 mainram(CPUCLn, CPUAD[11:0], cpu_rd_mram, cpu_cs_mram & CPUWR, CPUDO )
 
 
 // Video mode latch & Sound Request
-reg [7:0] VIDMD;
+wire cpu_cs_sreq = ((CPUAD[7:0] == 8'h14)|(CPUAD[7:0] == 8'h18)) & cpu_iorq;
+wire cpu_cs_vidm = ((CPUAD[7:0] == 8'h15)|(CPUAD[7:0] == 8'h19)) & cpu_iorq;
+
 always @(posedge CPUCLn or posedge RESET) begin
 	if (RESET) begin
 		VIDMD <= 0;
@@ -103,25 +107,20 @@ always @(posedge CPUCLn or posedge RESET) begin
 	end
 	else begin
 		if (cpu_iorq & _cpu_wr) begin
-			// Z80 PIO
-			if (CPUAD[4:0] == 5'b1_1000) begin SNDNO <= CPUDO; SNDRQ <= 1'b1; end else
-			if (CPUAD[4:0] == 5'b1_1001) begin VIDMD <= CPUDO; end else
-
-			// 8255
-			if (CPUAD[4:0] == 5'b1_0100) begin SNDNO <= CPUDO; SNDRQ <= 1'b1; end else
-			if (CPUAD[4:0] == 5'b1_0101) begin VIDMD <= CPUDO; end else
-			//if (CPUAD[4:0] == 5'b1_0110) begin SNDRQ <= CPUDO[7]; end else
-
-			SNDRQ <= 1'b0;
+			     if (cpu_cs_vidm) begin VIDMD <= CPUDO; end
+			else if (cpu_cs_sreq) begin SNDNO <= CPUDO; SNDRQ <= 1'b1; end
+			else SNDRQ <= 1'b0;
 		end
 		else SNDRQ <= 1'b0;
 	end
 end
 
 
-dataselector5 mcpudisel(
+// CPU data selector
+dataselector6 mcpudisel(
 	CPUDI,
 	VIDCS,		  VIDDO,
+	cpu_cs_vidm,  VIDMD,
 	cpu_cs_port,  cpu_rd_port,
 	cpu_cs_mram,  cpu_rd_mram,
 	cpu_cs_mrom0, cpu_rd_mrom0,
