@@ -104,13 +104,13 @@ always @(posedge CPUCLn or posedge RESET) begin
 	else begin
 		if (cpu_iorq & _cpu_wr) begin
 			// Z80 PIO
-			if (CPUAD[4:0] == 5'b1_1001) begin VIDMD <= CPUDO; end else
 			if (CPUAD[4:0] == 5'b1_1000) begin SNDNO <= CPUDO; SNDRQ <= 1'b1; end else
+			if (CPUAD[4:0] == 5'b1_1001) begin VIDMD <= CPUDO; end else
 
 			// 8255
-			if (CPUAD[4:0] == 5'b1_0000) begin SNDNO <= CPUDO;    end else
-			if (CPUAD[4:0] == 5'b1_0001) begin VIDMD <= CPUDO;    end else
-			if (CPUAD[4:0] == 5'b1_0010) begin SNDRQ <= CPUDO[7]; end else
+			if (CPUAD[4:0] == 5'b1_0100) begin SNDNO <= CPUDO; SNDRQ <= 1'b1; end else
+			if (CPUAD[4:0] == 5'b1_0101) begin VIDMD <= CPUDO; end else
+			//if (CPUAD[4:0] == 5'b1_0110) begin SNDRQ <= CPUDO[7]; end else
 
 			SNDRQ <= 1'b0;
 		end
