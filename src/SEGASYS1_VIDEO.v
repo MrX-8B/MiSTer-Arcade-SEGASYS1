@@ -224,11 +224,11 @@ always @ ( posedge cpu_cl or posedge RESET) begin
 	end
 	else begin
 		if (cpu_wr_scrreg) begin
-			case({cpu_ad[6],cpu_ad[0]})
-			2'b11: scrx[15:8] <= cpu_dw;
-			2'b10: scrx[ 7:0] <= cpu_dw;
-			2'b01: scry <= cpu_dw;
-			2'b00: ;
+			case(cpu_ad[7:0])
+			8'hBD: scry <= cpu_dw;
+			8'hFC: scrx[ 7:0] <= cpu_dw;
+			8'hFD: scrx[15:8] <= cpu_dw;
+			default:;
 			endcase
 		end
 	end
@@ -412,15 +412,15 @@ module VIDADEC
 	output		 cpu_rd
 );
 
-assign cpu_cs_palram		 = ( cpu_ad[15:11] ==  5'b1101_1  );
-assign cpu_cs_spram		 = ( cpu_ad[15:11] ==  5'b11010   );
-assign cpu_cs_mixcoll    = ( cpu_ad[15:10] ==  6'b1111_00 );
-wire	 cpu_cs_mixcollclr = ( cpu_ad[15:10] ==  6'b1111_01 );
-assign cpu_cs_sprcoll    = ( cpu_ad[15:10] ==  6'b1111_10 );
-wire   cpu_cs_sprcollclr = ( cpu_ad[15:10] ==  6'b1111_11 );
-assign cpu_cs_vram0		 = ( cpu_ad[15:11] ==  5'b11100   );
-assign cpu_cs_vram1		 = ( cpu_ad[15:11] ==  5'b11101   );
-wire   cpu_cs_scrreg     = ((cpu_ad[15: 0] & 16'b1111_1111_1011_1110) == 16'b1110_1111_1011_1100);
+assign cpu_cs_palram		 = (cpu_ad[15:11] == 5'b1101_1   );
+assign cpu_cs_spram		 = (cpu_ad[15:11] == 5'b1101_0   );
+assign cpu_cs_mixcoll    = (cpu_ad[15:10] == 6'b1111_00  );
+wire	 cpu_cs_mixcollclr = (cpu_ad[15:10] == 6'b1111_01  );
+assign cpu_cs_sprcoll    = (cpu_ad[15:10] == 6'b1111_10  );
+wire   cpu_cs_sprcollclr = (cpu_ad[15:10] == 6'b1111_11  );
+assign cpu_cs_vram0		 = (cpu_ad[15:11] == 5'b1110_0   );
+assign cpu_cs_vram1		 = (cpu_ad[15:11] == 5'b1110_1   );
+wire   cpu_cs_scrreg     = (cpu_ad[15: 8] == 8'b1110_1111);
 
 
 assign cpu_wr_palram 	 = cpu_cs_palram 		& cpu_wr;
