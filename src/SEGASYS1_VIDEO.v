@@ -372,11 +372,11 @@ assign VBLK = (PV == 9'd224) & (PH <= 9'd64);
 assign HPOS = PH+1;
 assign VPOS = PV;
 
-wire [8:0] BGHSCR = (511-scrx[9:1])-10;
-wire [8:0] BGVSCR = { 1'b0, scry };
+wire [7:0] BGHSCR = scrx[9:1]+14;
+wire [7:0] BGVSCR = scry;
 
-assign BG0HP = BGHSCR+HPOS;
-assign BG0VP = BGVSCR+VPOS;
+assign BG0HP = (HPOS-BGHSCR)+3;
+assign BG0VP = (VPOS+BGVSCR);
 
 assign BG1HP = HPOS+3;
 assign BG1VP = VPOS;

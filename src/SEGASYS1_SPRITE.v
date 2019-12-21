@@ -142,7 +142,7 @@ always @ ( negedge VCLKx4 ) begin
 			// get yofs/xpos/bank
 			2: begin
 				yofs <= hitsprvps[hitr];
-				xpos <= sprdt[8:1]+14;
+				xpos <= ((sprdt[9:0]+1)/2)+14;
 				bank <= { sprdt[13], sprdt[14], sprdt[15] };
 				spr_ofs <= 2;
 				phaseHD <= 3;
