@@ -310,7 +310,7 @@ module TileChrMUX
 	input  [23:0]		tiledt
 );
 
-reg			tphase;
+reg tphase;
 always @(negedge VCLKx8) begin
 	if (tphase) tile1dt <= tiledt;
 	else tile0dt <= tiledt;
@@ -558,17 +558,12 @@ module COLLRAM_M
 reg [63:0] core;
 reg coll_rd, coll_sm;
 
-always @(posedge cpu_cl) coll_rd <= core[cpu_ad];
-
 always @(posedge VCLKx4) begin
-	if (cpu_cl) begin
-		if (cpu_wr_coll) core[cpu_ad] <= 1'b0;
-		if (cpu_wr_collclr) coll_sm <= 1'b0;
-	end
-	else coll_sm <= coll;
-	if (coll) core[coll_ad] <= 1'b1;
+	if (cpu_cl & cpu_wr_coll) 	  core[cpu_ad] <= 1'b0; else if (coll) core[coll_ad] <= 1'b1;
+	if (cpu_cl & cpu_wr_collclr)      coll_sm <= 1'b0; else if (coll)       coll_sm <= 1'b1;
 end
 
+always @(posedge cpu_cl) coll_rd <= core[cpu_ad];
 assign cpu_rd_coll = { coll_sm, 6'b111111, coll_rd };
 
 endmodule
@@ -589,17 +584,12 @@ module COLLRAM_S
 reg [1023:0] core;
 reg coll_rd, coll_sm;
 
-always @(posedge cpu_cl) coll_rd <= core[cpu_ad];
-
 always @(posedge VCLKx4) begin
-	if (cpu_cl) begin
-		if (cpu_wr_coll) core[cpu_ad] <= 1'b0;
-		if (cpu_wr_collclr) coll_sm <= 1'b0;
-	end
-	else coll_sm <= coll;
-	if (coll) core[coll_ad] <= 1'b1;
+	if (cpu_cl & cpu_wr_coll   ) core[cpu_ad] <= 1'b0; else if (coll) core[coll_ad] <= 1'b1;
+	if (cpu_cl & cpu_wr_collclr)      coll_sm <= 1'b0; else if (coll)       coll_sm <= 1'b1;
 end
 
+always @(posedge cpu_cl) coll_rd <= core[cpu_ad];
 assign cpu_rd_coll = { coll_sm, 6'b111111, coll_rd };
 
 endmodule
