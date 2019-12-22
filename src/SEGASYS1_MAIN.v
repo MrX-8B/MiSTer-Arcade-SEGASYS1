@@ -74,8 +74,8 @@ SEGASYS1_IPORT port(CPUAD,cpu_iorq, INP0,INP1,INP2, DSW0,DSW1, cpu_cs_port,cpu_r
 
 
 // Program ROM
-wire			cpu_cs_mrom0 = (CPUAD[15]    == 1'b0 );
-wire			cpu_cs_mrom1 = (CPUAD[15:14] == 2'b10);
+wire			cpu_cs_mrom0 = (CPUAD[15]    == 1'b0 ) & cpu_mreq;
+wire			cpu_cs_mrom1 = (CPUAD[15:14] == 2'b10) & cpu_mreq;
 
 wire [7:0]	cpu_rd_mrom0;
 wire [7:0]	cpu_rd_mrom1;
@@ -91,13 +91,16 @@ DLROM #(14,8) rom1(CPUCLn,CPUAD,cpu_rd_mrom1, ROMCL,ROMAD,ROMDT,ROMEN & `EN_MCPU
 
 // Work RAM
 wire [7:0]	cpu_rd_mram;
-wire			cpu_cs_mram = (CPUAD[15:12] == 4'b1100);
+wire			cpu_cs_mram = (CPUAD[15:12] == 4'b1100) & cpu_mreq;
 SRAM_4096 mainram(CPUCLn, CPUAD[11:0], cpu_rd_mram, cpu_cs_mram & CPUWR, CPUDO );
 
 
 // Video mode latch & Sound Request
 wire cpu_cs_sreq = ((CPUAD[7:0] == 8'h14)|(CPUAD[7:0] == 8'h18)) & cpu_iorq;
 wire cpu_cs_vidm = ((CPUAD[7:0] == 8'h15)|(CPUAD[7:0] == 8'h19)) & cpu_iorq;
+
+wire cpu_wr_sreq = cpu_cs_sreq & _cpu_wr;
+wire cpu_wr_vidm = cpu_cs_vidm & _cpu_wr;
 
 always @(posedge CPUCLn or posedge RESET) begin
 	if (RESET) begin
@@ -106,12 +109,8 @@ always @(posedge CPUCLn or posedge RESET) begin
 		SNDNO <= 0;
 	end
 	else begin
-		if (cpu_iorq & _cpu_wr) begin
-			     if (cpu_cs_vidm) begin VIDMD <= CPUDO; end
-			else if (cpu_cs_sreq) begin SNDNO <= CPUDO; SNDRQ <= 1'b1; end
-			else SNDRQ <= 1'b0;
-		end
-		else SNDRQ <= 1'b0;
+		if (cpu_wr_vidm) VIDMD <= CPUDO;
+		if (cpu_wr_sreq) begin SNDNO <= CPUDO; SNDRQ <= 1'b1; end else SNDRQ <= 1'b0;
 	end
 end
 
