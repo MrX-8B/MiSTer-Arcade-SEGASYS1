@@ -32,16 +32,20 @@ SEGASYS1_DECT1 t1(clk,mrom_m1,mrom_ad, od0, rad,rdt, ROMCL,ROMAD,ROMDT,ROMEN);
 SEGASYS1_DECT2 t2(clk,mrom_m1,mrom_ad, od1, dum,rdt, ROMCL,ROMAD,ROMDT,ROMEN);
 
 // Type Detect and switch
-reg [15:0] cnt;
+reg [15:0] cnt0,cnt2;
 always @(posedge ROMCL) begin
 	if (ROMEN) begin
 		if (ROMAD>=`DECTBLADRS) begin
-			cnt <= (ROMDT>=8'd24) ? 0 : (cnt+1);
+			cnt2 <= (ROMDT>=8'd24) ? 0 : (cnt2+1);
+			cnt0 <= (ROMDT!=8'd0 ) ? 0 : (cnt0+1);
 		end
-		else cnt <= 0;
+		else begin
+			cnt2 <= 0;
+			cnt0 <= 0;
+		end
 	end
 end
-assign mrom_dt = (cnt>=128) ? od1 : od0;
+assign mrom_dt = (cnt0>=128) ? rdt : (cnt2>=128) ? od1 : od0;
 
 endmodule
 

@@ -87,7 +87,6 @@ wire bCabinet = 1'b0;
 wire [7:0] DSW0 = 8'hFF;
 wire [7:0] DSW1 = 8'hFE;
 
-
 ////////////////////   CLOCKS   ///////////////////
 
 wire clk_hdmi;
@@ -143,6 +142,12 @@ hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
 
 	.ps2_key(ps2_key)
 );
+
+reg [7:0] tno;
+always @(posedge clk_sys) begin
+	if (ioctl_index==0) tno <= 0;
+	else if (ioctl_index==1) tno <= ioctl_dout;
+end
 
 wire       pressed = ps2_key[9];
 wire [8:0] code    = ps2_key[8:0];
@@ -273,6 +278,7 @@ wire iRST = RESET | status[0] | buttons[1] | ioctl_download;
 wire [7:0] INP0 = ~{m_left1,m_right1,m_up1,m_down1,1'd0,m_trig12,m_trig11,1'd0}; 
 wire [7:0] INP1 = ~{m_left2,m_right2,m_up2,m_down2,1'd0,m_trig22,m_trig21,1'd0}; 
 wire [7:0] INP2 = ~{2'd0,m_start2,m_start1,3'd0, m_coin}; 
+
 
 SEGASYSTEM1 GameCore ( 
 	.clk48M(clk_48M),.reset(iRST),
