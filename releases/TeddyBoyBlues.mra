@@ -1,0 +1,35 @@
+<misterromdescription>
+  <rbf>SEGASYS1</rbf>
+  <rom index="0" zip="teddybb.zip" md5="f2fd1aa2db99df38b56d4a05c192db32">
+        <part name="epr-6768.116"/>
+        <part name="epr-6769.109"/>
+        <part name="epr-6770.96"/>
+        <part name="epr6748x.120"/>
+        <part name="epr6748x.120"/>
+        <part name="epr-6735.117"/>
+        <part name="epr-6737.04"/>
+        <part name="epr-6736.110"/>
+        <part name="epr-6738.05"/>
+        <part name="epr-6747.62"/>
+        <part name="epr-6745.64"/>
+        <part name="epr-6743.66"/>
+        <part name="epr-6746.61"/>
+        <part name="epr-6744.63"/>
+        <part name="epr-6742.65"/>
+        <part name="pr-5317.76"/>
+        <part>
+ 20 28 00 08 80 00 a0 20 20 28 00 08 a0 a8 20 28
+ 28 08 a8 88 a0 80 a8 88 a0 a8 20 28 a0 80 a8 88
+ 20 28 00 08 28 08 a8 88 a0 a8 20 28 a0 a8 20 28
+ a0 80 a8 88 28 08 a8 88 a0 a8 20 28 28 08 a8 88
+ 80 00 a0 20 80 00 a0 20 a0 20 a8 28 a0 a8 20 28
+ a0 20 a8 28 a0 80 a8 88 a0 80 a8 88 a0 80 a8 88
+ 80 00 a0 20 20 28 00 08 a0 a8 20 28 a0 20 a8 28
+ 80 00 a0 20 a0 80 a8 88 a0 a8 20 28 a0 20 a8 28
+</part>
+  </rom>
+  <rom index="1">
+        <part>0A/part>
+  </rom>
+</misterromdescription>
+
