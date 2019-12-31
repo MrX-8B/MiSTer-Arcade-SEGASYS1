@@ -14,7 +14,7 @@ module emu
 	input         RESET,
 
 	//Must be passed to hps_io module
-	inout  [44:0] HPS_BUS,
+	inout  [45:0] HPS_BUS,
 
 	//Base video clock. Usually equals to CLK_SYS.
 	output        VGA_CLK,
@@ -29,7 +29,8 @@ module emu
 	output        VGA_HS,
 	output        VGA_VS,
 	output        VGA_DE,    // = ~(VBlank | HBlank)
-
+	output		  VGA_F1,
+	
 	//Base video clock. Usually equals to CLK_SYS.
 	output        HDMI_CLK,
 
@@ -59,9 +60,19 @@ module emu
 
 	output [15:0] AUDIO_L,
 	output [15:0] AUDIO_R,
-	output        AUDIO_S    // 1 - signed audio samples, 0 - unsigned
+	output        AUDIO_S,   // 1 - signed audio samples, 0 - unsigned
+
+	// Open-drain User port.
+	// 0 - D+/RX
+	// 1 - D-/TX
+	// 2..6 - USR2..USR6
+	// Set USER_OUT to 1 to read from USER_IN.
+	input   [6:0] USER_IN,
+	output  [6:0] USER_OUT
 );
 
+assign VGA_F1    = 0;
+assign USER_OUT  = '1;
 assign LED_USER  = ioctl_download;
 assign LED_DISK  = 0;
 assign LED_POWER = 0;
@@ -74,11 +85,13 @@ assign HDMI_ARY = status[1] ? 8'd9  : 8'd3;
 localparam CONF_STR = {
 	"A.SEGASYS1;;",
 	"-;",
-	"O1,Aspect Ratio,Original,Wide;",
+	"H0O1,Aspect Ratio,Original,Wide;",
 	"O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
 	"-;",
 	"R0,Reset;",
+
 	"J1,Trig1,Trig2,Start 1P,Start 2P,Coin;",
+	"jn,A,B,Start,Select,R;",
 	"V,v",`BUILD_DATE
 };
 
@@ -89,16 +102,15 @@ wire [7:0] DSW1 = 8'hFE;
 
 ////////////////////   CLOCKS   ///////////////////
 
-wire clk_hdmi;
 wire clk_48M;
-wire clk_sys = clk_hdmi;
+wire clk_hdmi = clk_48M;
+wire clk_sys  = clk_48M;
 
 pll pll
 (
 	.rst(0),
 	.refclk(CLK_50M),
-	.outclk_0(clk_48M),
-	.outclk_1(clk_hdmi)
+	.outclk_0(clk_48M)
 );
 
 ///////////////////////////////////////////////////
@@ -106,6 +118,7 @@ pll pll
 wire [31:0] status;
 wire  [1:0] buttons;
 wire        forced_scandoubler;
+wire			direct_video;
 
 wire        ioctl_download;
 wire        ioctl_wr;
@@ -118,6 +131,8 @@ wire [15:0] joystk1, joystk2;
 wire [15:0] joystick_analog_0;
 wire [15:0] joystick_analog_1;
 
+wire [21:0]	gamma_bus;
+
 hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
 (
 	.clk_sys(clk_sys),
@@ -126,8 +141,13 @@ hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
 	.conf_str(CONF_STR),
 
 	.buttons(buttons),
+
 	.status(status),
+	.status_menumask({15'h0,direct_video}),
+	
 	.forced_scandoubler(forced_scandoubler),
+	.gamma_bus(gamma_bus),
+	.direct_video(direct_video),
 
 	.ioctl_download(ioctl_download),
 	.ioctl_wr(ioctl_wr),
