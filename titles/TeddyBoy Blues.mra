@@ -7,8 +7,11 @@
 	<manufacturer>Sega</manufacturer>
 	<category>Platform</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>0A</part>
+		<part>00</part>
 	</rom>
 	<rom index="0" zip="teddybb.zip" md5="f2fd1aa2db99df38b56d4a05c192db32" type="merged|nonmerged|split">
 		<part name="epr-6768.116"/>

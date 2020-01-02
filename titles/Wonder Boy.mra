@@ -7,8 +7,11 @@
 	<manufacturer>Escape (Sega license)</manufacturer>
 	<category>Platform / Extra</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>02</part>
+		<part>00</part>
 	</rom>
 	<rom index="0" zip="wboy.zip" md5="807e48e44a0c5813b3b28f89a6f8a4ad" type="merged|nonmerged|split">
 		<part name="epr-7489.116"/>

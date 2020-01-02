@@ -8,8 +8,11 @@
 	<category>Adventure</category>
 	<category>Platform / Extra</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>03</part>
+		<part>00</part>
 	</rom>
 	<rom index="0" zip="pitfall2.zip" md5="cb45625a256175bd239e3d3eef70f779" type="merged|nonmerged|split">
 		<part name="epr-6456a.116"/>

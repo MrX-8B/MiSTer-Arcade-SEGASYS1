@@ -7,8 +7,11 @@
 	<manufacturer>Coreland / Sega</manufacturer>
 	<category>Space / Force</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>05</part>
+		<part>00</part>
 	</rom>
 	<rom index="0" zip="raflesia.zip" md5="9a2dc90713464e4b8f9d9dce43d3e324" type="merged|nonmerged|split">
 		<part name="epr-7411.116"/>

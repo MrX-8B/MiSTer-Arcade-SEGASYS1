@@ -7,8 +7,11 @@
 	<manufacturer>Sega</manufacturer>
 	<category>Racing / Cars</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>07</part>
+		<part>00</part>
 	</rom>
 	<rom index="0" zip="upndown.zip" md5="883aa812204763b2ffcbe9862cdacb39" type="merged|nonmerged|split">
 		<part name="epr5516a.129"/>

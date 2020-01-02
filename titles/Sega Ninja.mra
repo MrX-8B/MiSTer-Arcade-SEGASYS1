@@ -7,8 +7,11 @@
 	<manufacturer>Sega</manufacturer>
 	<category>Fighter / Asian</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>09</part>
+		<part>00</part>
 	</rom>
 	<rom index="0" zip="seganinj.zip" md5="501c51f17b8ce86c56c0b5af04448612" type="merged|nonmerged|split">
 		<part name="epr-6594a.116"/>

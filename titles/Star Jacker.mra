@@ -7,8 +7,11 @@
 	<manufacturer>Sega</manufacturer>
 	<category>Space / Force</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>80</part>
+		<part>06</part>
 	</rom>
 	<rom index="0" zip="starjack.zip" md5="0a1b9512a7027834ec5134d2454a5850" type="merged|nonmerged|split">
 		<part name="epr-5320b.129"/>

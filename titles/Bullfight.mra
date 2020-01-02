@@ -8,8 +8,11 @@
 	<category>Maze / Animals</category>
 	<category>Sports</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>07</part>
+		<part>00</part>
 	</rom>
 	<rom index="0" zip="bullfgt.zip" md5="a3274944c3685071a47ca40e5f5de8a8" type="merged|nonmerged|split">
 		<part name="epr-.129"/>

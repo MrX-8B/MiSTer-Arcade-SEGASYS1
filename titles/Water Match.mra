@@ -8,8 +8,11 @@
 	<category>Sports / 1</category>
 	<category>Sports / Water</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>07</part>
+		<part>00</part>
 	</rom>
 	<rom index="0" zip="wmatch.zip" md5="efdba791a0e2297b5936ca7d645a3912" type="merged|nonmerged|split">
 		<part name="wm.129"/>

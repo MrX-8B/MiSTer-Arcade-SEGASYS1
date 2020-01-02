@@ -8,8 +8,11 @@
 	<category>Maze / Blocks</category>
 	<category>Space / Jetman</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>07</part>
+		<part>00</part>
 	</rom>
 	<rom index="0" zip="swat.zip" md5="63402cddf57d92dcfdcecbce7d1d9b83" type="merged|nonmerged|split">
 		<part name="epr5807b.129"/>

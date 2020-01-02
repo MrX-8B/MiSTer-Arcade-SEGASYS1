@@ -7,8 +7,11 @@
 	<manufacturer>Coreland / Sega</manufacturer>
 	<category>Maze</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>04</part>
+		<part>00</part>
 	</rom>
 	<rom index="0" zip="imsorry.zip" md5="a9b86a0310dfd51162919f115b0a499e" type="merged|nonmerged|split">
 		<part name="epr-6676.116"/>

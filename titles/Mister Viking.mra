@@ -7,8 +7,11 @@
 	<manufacturer>Sega</manufacturer>
 	<category>Fighter / Warriors</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>07</part>
+		<part>02</part>
 	</rom>
 	<rom index="0" zip="mrviking.zip" md5="7fa47147c580223c95b5e9b0ef8a3774" type="merged|nonmerged|split">
 		<part name="epr-5873.129"/>

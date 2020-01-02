@@ -7,8 +7,11 @@
 	<manufacturer>Coreland / Sega</manufacturer>
 	<category>Fighter / Hero</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>08</part>
+		<part>00</part>
 	</rom>
 	<rom index="0" zip="myhero.zip" md5="cde7c117b285ecfcf17814e30099eee0" type="merged|nonmerged|split">
 		<part name="epr-6963b.116"/>

@@ -8,8 +8,11 @@
 	<category>Maze / Extra</category>
 	<category>Racing / Bicycle</category>
 	<rbf>segasys1</rbf>
+    <switches default="FF,FC">
+		<dip bits="9" name="(dummy)" ids="0,1"/>
+	</switches>
 	<rom index="1">
-		<part>06</part>
+		<part>04</part>
 	</rom>
 	<rom index="0" zip="spatter.zip" md5="b013b89a7342bb500df196f010967232" type="merged">
 		<part name="ssanchan/epr-6310.116"/>
