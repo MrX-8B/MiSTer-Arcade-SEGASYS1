@@ -1,5 +1,10 @@
 <misterromdescription>
   <rbf>SEGASYS1</rbf>
+  <switches default="FF,FC">
+		<dip bits="10,11" name="Lives" ids="Infinite,5,4,3"/>
+		<dip bits="12,13" name="Extend" ids="40k/140k/280k,40k/120k/240k,30k/100k/200k,30k/80k/160k"/>
+		<dip bits="14"    name="Difficulty" ids="Hard,Easy"/>
+	</switches>
   <rom index="0" zip="flicky.zip" md5="39cd01b4c2ab927c06985eceb74c0dbd">
         <part name="epr-5978a.116"/>
         <part name="epr-5979a.109"/>

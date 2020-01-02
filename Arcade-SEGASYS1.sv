@@ -88,8 +88,9 @@ localparam CONF_STR = {
 	"H0O1,Aspect Ratio,Original,Wide;",
 	"O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
 	"-;",
+	"DIP;",
+	"-;",
 	"R0,Reset;",
-
 	"J1,Trig1,Trig2,Start 1P,Start 2P,Coin;",
 	"jn,A,B,Start,Select,R;",
 	"V,v",`BUILD_DATE
@@ -97,8 +98,6 @@ localparam CONF_STR = {
 
 wire bCabinet = 1'b0;
 
-wire [7:0] DSW0 = 8'hFF;
-wire [7:0] DSW1 = 8'hFE;
 
 ////////////////////   CLOCKS   ///////////////////
 
@@ -167,6 +166,13 @@ reg [7:0] tno;
 always @(posedge clk_sys) begin
 	if (ioctl_index==0) tno <= 0;
 	else if (ioctl_index==1) tno <= ioctl_dout;
+end
+
+reg [7:0] DSW[8];
+always @(posedge clk_sys) begin
+	if (ioctl_wr && (ioctl_index==254) && !ioctl_addr[24:3]) begin
+		DSW[ioctl_addr[2:0]] <= ioctl_dout;
+	end
 end
 
 wire       pressed = ps2_key[9];
@@ -293,7 +299,7 @@ assign AUDIO_S = 0; // unsigned PCM
 
 ///////////////////////////////////////////////////
 
-wire iRST = RESET | status[0] | buttons[1] | ioctl_download;
+wire iRST = RESET | status[0] | buttons[1];
 
 wire [7:0] INP0 = ~{m_left1,m_right1,m_up1,m_down1,1'd0,m_trig12,m_trig11,1'd0}; 
 wire [7:0] INP1 = ~{m_left2,m_right2,m_up2,m_down2,1'd0,m_trig22,m_trig21,1'd0}; 
@@ -304,7 +310,7 @@ SEGASYSTEM1 GameCore (
 	.clk48M(clk_48M),.reset(iRST),
 
 	.INP0(INP0),.INP1(INP1),.INP2(INP2),
-	.DSW0(DSW0),.DSW1(DSW1),
+	.DSW0(DSW[0]),.DSW1(DSW[1]),
 
 	.PH(HPOS),.PV(VPOS),.PCLK(PCLK),.POUT(POUT),
 	.SOUT(AOUT),
