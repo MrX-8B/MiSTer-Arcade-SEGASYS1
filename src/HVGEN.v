@@ -11,7 +11,9 @@ module HVGEN
 	output reg			HBLK = 1,
 	output reg			VBLK = 1,
 	output reg			HSYN = 1,
-	output reg			VSYN = 1
+	output reg			VSYN = 1,
+	
+	input					H240
 );
 
 reg [8:0] hcnt = 0;
@@ -19,6 +21,8 @@ reg [8:0] vcnt = 0;
 
 assign HPOS = hcnt-16;
 assign VPOS = vcnt;
+
+wire  H240B = H240 ? ((hcnt<24)|(hcnt>=264)) : 0;
 
 always @(posedge PCLK) begin
 	case (hcnt)
@@ -37,7 +41,7 @@ always @(posedge PCLK) begin
 		end
 		default: hcnt <= hcnt+1;
 	endcase
-	oRGB <= (HBLK|VBLK) ? 15'h0 : iRGB;
+	oRGB <= (HBLK|VBLK|H240B) ? 15'h0 : iRGB;
 end
 
 endmodule

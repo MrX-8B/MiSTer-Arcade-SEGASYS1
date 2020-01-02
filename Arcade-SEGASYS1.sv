@@ -162,16 +162,12 @@ hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
 	.ps2_key(ps2_key)
 );
 
-reg [7:0] tno;
-always @(posedge clk_sys) begin
-	if (ioctl_index==0) tno <= 0;
-	else if (ioctl_index==1) tno <= ioctl_dout;
-end
-
+reg [7:0] SYSMODE;	// [0]=SYS1/SYS2,[1]=H/V,[2]=H256/H240
 reg [7:0] DSW[8];
 always @(posedge clk_sys) begin
-	if (ioctl_wr && (ioctl_index==254) && !ioctl_addr[24:3]) begin
-		DSW[ioctl_addr[2:0]] <= ioctl_dout;
+	if (ioctl_wr) begin
+		if ((ioctl_index==1  ) && (ioctl_addr==0))   SYSMODE <= ioctl_dout;
+		if ((ioctl_index==254) && !ioctl_addr[24:3]) DSW[ioctl_addr[2:0]] <= ioctl_dout;
 	end
 end
 
@@ -286,7 +282,8 @@ wire  [7:0] POUT;
 HVGEN hvgen
 (
 	.HPOS(HPOS),.VPOS(VPOS),.PCLK(PCLK),.iRGB(POUT),
-	.oRGB({b,g,r}),.HBLK(hblank),.VBLK(vblank),.HSYN(hs),.VSYN(vs)
+	.oRGB({b,g,r}),.HBLK(hblank),.VBLK(vblank),.HSYN(hs),.VSYN(vs),
+	.H240(SYSMODE[2])
 );
 assign ce_vid = PCLK;
 
