@@ -1,0 +1,97 @@
+<misterromdescription>
+	<name>Ninja Princess (315-5098, 128k Ver.)</name>
+	<mameversion>0217</mameversion>
+	<setname>nprinceso</setname>
+	<mratimestamp>20200102000000</mratimestamp>
+	<year>1985</year>
+	<manufacturer>Sega</manufacturer>
+	<category>Fighter / Asian</category>
+	<rbf>segasys1</rbf>
+	<rom index="1">
+		<part>09</part>
+	</rom>
+	<rom index="0" zip="seganinj.zip" md5="37c5edb4e8d85cfb494b7f618bcd12b8" type="merged">
+		<part name="nprinceso/epr-6550.116"/>
+		<part name="nprinceso/epr-6551.109"/>
+		<part name="epr-6596a.96"/>
+		<part name="epr-6559.120"/>
+		<part name="epr-6559.120"/>
+		<part name="epr-6546.117"/>
+		<part name="epr-6548.04"/>
+		<part name="epr-6547.110"/>
+		<part name="ninja/epr-6549.05"/>
+		<part name="epr-6558.62"/>
+		<part name="epr-6556.64"/>
+		<part name="epr-6554.66"/>
+		<part name="nprinces/epr-6557.61"/>
+		<part name="nprinces/epr-6555.63"/>
+		<part name="nprinces/epr-6553.65"/>
+		<part name="pr-5317.76"/>
+		<part>
+08 88 00 80 a0 20 80 00 a8 a0 28 20 88 a8 80 a0 
+88 80 08 00 28 08 a8 88 88 a8 80 a0 28 08 a8 88 
+88 a8 80 a0 a0 20 80 00 a8 a0 28 20 a8 a0 28 20 
+88 80 08 00 88 a8 80 a0 88 a8 80 a0 88 a8 80 a0 
+a0 20 80 00 a0 20 80 00 08 88 00 80 28 08 a8 88 
+88 a8 80 a0 88 80 08 00 88 a8 80 a0 28 08 a8 88 
+88 a8 80 a0 88 a8 80 a0 88 a8 80 a0 88 a8 80 a0 
+88 80 08 00 88 80 08 00 08 88 00 80 28 08 a8 88 
+		</part>
+	</rom>
+	<rom index="0" zip="nprinceso.zip" md5="37c5edb4e8d85cfb494b7f618bcd12b8" type="nonmerged">
+		<part name="epr-6550.116"/>
+		<part name="epr-6551.109"/>
+		<part name="epr-6552.96"/>
+		<part name="epr-6559.120"/>
+		<part name="epr-6559.120"/>
+		<part name="epr-6546.117"/>
+		<part name="epr-6548.04"/>
+		<part name="epr-6547.110"/>
+		<part name="epr-6549.05"/>
+		<part name="epr-6558.62"/>
+		<part name="epr-6556.64"/>
+		<part name="epr-6554.66"/>
+		<part name="epr-6557.61"/>
+		<part name="epr-6555.63"/>
+		<part name="epr-6553.65"/>
+		<part name="pr-5317.76"/>
+		<part>
+08 88 00 80 a0 20 80 00 a8 a0 28 20 88 a8 80 a0 
+88 80 08 00 28 08 a8 88 88 a8 80 a0 28 08 a8 88 
+88 a8 80 a0 a0 20 80 00 a8 a0 28 20 a8 a0 28 20 
+88 80 08 00 88 a8 80 a0 88 a8 80 a0 88 a8 80 a0 
+a0 20 80 00 a0 20 80 00 08 88 00 80 28 08 a8 88 
+88 a8 80 a0 88 80 08 00 88 a8 80 a0 28 08 a8 88 
+88 a8 80 a0 88 a8 80 a0 88 a8 80 a0 88 a8 80 a0 
+88 80 08 00 88 80 08 00 08 88 00 80 28 08 a8 88 
+		</part>
+	</rom>
+	<rom index="0" zip="nprinceso.zip" md5="37c5edb4e8d85cfb494b7f618bcd12b8" type="split">
+		<part name="epr-6550.116"/>
+		<part name="epr-6551.109"/>
+		<part name="epr-6596a.96" zip="seganinj.zip"/>
+		<part name="epr-6559.120" zip="seganinj.zip"/>
+		<part name="epr-6559.120" zip="seganinj.zip"/>
+		<part name="epr-6546.117" zip="seganinj.zip"/>
+		<part name="epr-6548.04" zip="seganinj.zip"/>
+		<part name="epr-6547.110" zip="seganinj.zip"/>
+		<part name="epr-6549.05"/>
+		<part name="epr-6558.62" zip="seganinj.zip"/>
+		<part name="epr-6556.64" zip="seganinj.zip"/>
+		<part name="epr-6554.66" zip="seganinj.zip"/>
+		<part name="epr-6557.61"/>
+		<part name="epr-6555.63"/>
+		<part name="epr-6553.65"/>
+		<part name="pr-5317.76" zip="seganinj.zip"/>
+		<part>
+08 88 00 80 a0 20 80 00 a8 a0 28 20 88 a8 80 a0 
+88 80 08 00 28 08 a8 88 88 a8 80 a0 28 08 a8 88 
+88 a8 80 a0 a0 20 80 00 a8 a0 28 20 a8 a0 28 20 
+88 80 08 00 88 a8 80 a0 88 a8 80 a0 88 a8 80 a0 
+a0 20 80 00 a0 20 80 00 08 88 00 80 28 08 a8 88 
+88 a8 80 a0 88 80 08 00 88 a8 80 a0 28 08 a8 88 
+88 a8 80 a0 88 a8 80 a0 88 a8 80 a0 88 a8 80 a0 
+88 80 08 00 88 80 08 00 08 88 00 80 28 08 a8 88 
+		</part>
+	</rom>
+</misterromdescription>

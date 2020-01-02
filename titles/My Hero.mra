@@ -1,0 +1,41 @@
+<misterromdescription>
+	<name>My Hero (US, not encrypted)</name>
+	<mameversion>0217</mameversion>
+	<setname>myhero</setname>
+	<mratimestamp>202001020000</mratimestamp>
+	<year>1985</year>
+	<manufacturer>Coreland / Sega</manufacturer>
+	<category>Fighter / Hero</category>
+	<rbf>segasys1</rbf>
+	<rom index="1">
+		<part>08</part>
+	</rom>
+	<rom index="0" zip="myhero.zip" md5="cde7c117b285ecfcf17814e30099eee0" type="merged|nonmerged|split">
+		<part name="epr-6963b.116"/>
+		<part name="epr-6964a.109"/>
+		<part name="epr-6927.96"/>
+		<part name="epr-69xx.120"/>
+		<part name="epr-69xx.120"/>
+		<part name="epr-6921.117"/>
+		<part name="epr-6923.04"/>
+		<part name="epr-6922.110"/>
+		<part name="epr-6924.05"/>
+		<part name="epr-6966.62"/>
+		<part name="epr-6960.64"/>
+		<part name="epr-6958.66"/>
+		<part name="epr-6961.61"/>
+		<part name="epr-6959.63"/>
+		<part name="epr-6957.65"/>
+		<part name="pr-5317.76"/>
+		<part>
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+		</part>
+	</rom>
+</misterromdescription>

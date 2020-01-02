@@ -1,0 +1,45 @@
+<misterromdescription>
+	<name>Water Match (315-5064)</name>
+	<mameversion>0217</mameversion>
+	<setname>wmatch</setname>
+	<mratimestamp>202001020000</mratimestamp>
+	<year>1984</year>
+	<manufacturer>Sega</manufacturer>
+	<category>Sports / 1</category>
+	<category>Sports / Water</category>
+	<rbf>segasys1</rbf>
+	<rom index="1">
+		<part>07</part>
+	</rom>
+	<rom index="0" zip="wmatch.zip" md5="efdba791a0e2297b5936ca7d645a3912" type="merged|nonmerged|split">
+		<part name="wm.129"/>
+		<part name="wm.130"/>
+		<part name="wm.131"/>
+		<part name="wm.132"/>
+		<part name="wm.133"/>
+		<part name="wm.134"/>
+		<part name="wm.3"/>
+		<part name="wm.3"/>
+		<part name="wm.86"/>
+		<part name="wm.93"/>
+		<part name="wm.86"/>
+		<part name="wm.93"/>
+		<part name="wm.82"/>
+		<part name="wm.81"/>
+		<part name="wm.80"/>
+		<part name="wm.65"/>
+		<part name="wm.64"/>
+		<part name="wm.63"/>
+		<part name="pr-5317.106"/>
+		<part>
+88 a8 80 a0 a0 80 20 00 08 88 00 80 88 a8 80 a0 
+20 00 a0 80 20 28 a0 a8 20 28 a0 a8 a0 80 20 00 
+a8 28 88 08 a8 28 88 08 08 88 00 80 a8 28 88 08 
+a8 28 88 08 20 28 a0 a8 a8 28 88 08 a8 28 88 08 
+20 28 a0 a8 88 a8 80 a0 88 a8 80 a0 20 28 a0 a8 
+20 28 a0 a8 a0 80 20 00 20 28 a0 a8 20 28 a0 a8 
+20 00 a0 80 20 28 a0 a8 a8 28 88 08 a0 80 20 00 
+20 28 a0 a8 20 28 a0 a8 a8 28 88 08 a8 28 88 08 
+		</part>
+	</rom>
+</misterromdescription>
