@@ -6,7 +6,6 @@
 module SEGASYS1_MAIN
 (
 	input				CLK48M,
-	input				CLK3M,
 
 	input				RESET,
 
@@ -36,6 +35,10 @@ module SEGASYS1_MAIN
 	input	  [7:0]	ROMDT,
 	input				ROMEN
 );
+
+reg [3:0] clkdiv;
+always @(posedge CLK48M) clkdiv <= clkdiv+1;
+wire CLK3M = clkdiv[3];
 
 wire			AXSCL   = CLK48M;
 wire			CPUCL   = CLK3M;

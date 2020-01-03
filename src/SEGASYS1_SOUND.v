@@ -5,7 +5,7 @@
 
  module SEGASYS1_SOUND
 (
-   input				clk8M,
+   input				clk48M,
 	input				reset,
 
    input   [7:0]	sndno,
@@ -19,11 +19,12 @@
 	input				ROMEN
 );
 
+
 //----------------------------------
 //  ClockGen
 //----------------------------------
-wire clk4M,clk2M;
-SndClkGen clkgen(clk8M,clk4M,clk2M);
+wire clk8M,clk4M,clk2M;
+SndClkGen clkgen(clk48M,clk8M,clk4M,clk2M);
 
 wire cpuclkx2 = clk8M;
 wire cpu_clk  = clk4M;
@@ -120,10 +121,21 @@ endmodule
 
 module SndClkGen
 (
-	input		clk8M,
-	output	clk4M,
-	output	clk2M
+	input			clk48M,
+	output reg 	clk8M,
+	output		clk4M,
+	output		clk2M
 );
+
+reg [1:0] count;
+always @( posedge clk48M ) begin
+	if (count > 2'd2) begin
+		count <= count - 2'd2;
+      clk8M <= ~clk8M;
+   end
+   else count <= count + 2'd1;
+end
+
 reg [1:0] clkdiv;
 always @ ( posedge clk8M ) clkdiv <= clkdiv+1;
 

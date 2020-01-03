@@ -17,15 +17,13 @@ module SEGASYS1_VIDEO
 	input				RESET,
 
 	input				VCLKx8,
-	input				VCLKx4,
-	input				VCLKx2,
-	input				VCLK,
 
 	input		[8:0]	PH,
 	input		[8:0]	PV,
 	input				VFLP,
 	
 	output			VBLK,
+	output			PCLK,
 	output   [7:0]	RGB8,
 
 	input				PALDSW,
@@ -43,7 +41,14 @@ module SEGASYS1_VIDEO
 	input				ROMEN
 );
 
+reg [2:0] clkdiv;
+always @(posedge VCLKx8) clkdiv <= clkdiv+1;
+wire VCLKx4 = clkdiv[0];
+wire VCLKx2 = clkdiv[1];
+wire VCLK   = clkdiv[2];
 
+assign PCLK = VCLK;
+	
 // CPU Interface
 wire [10:0] palno;
 wire  [7:0] palout;

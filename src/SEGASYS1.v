@@ -29,10 +29,6 @@ module SEGASYSTEM1
 	input				ROMEN
 );
 
-// Clocks
-wire                 clk24M, clk12M, clk6M, clk3M, clk8M ;
-CLKGEN clks( clk48M, clk24M, clk12M, clk6M, clk3M, clk8M );
-
 // CPU
 wire 			CPUCLn;
 wire [15:0] CPUAD;
@@ -44,7 +40,7 @@ SEGASYS1_MAIN Main (
 	.RESET(reset),
 	.INP0(INP0),.INP1(INP1),.INP2(INP2),
 	.DSW0(DSW0),.DSW1(DSW1),
-	.CLK48M(clk48M),.CLK3M(clk3M),
+	.CLK48M(clk48M),
 	.CPUCLn(CPUCLn),.CPUAD(CPUAD),.CPUDO(CPUDO),.CPUWR(CPUWR),
 	.VBLK(VBLK),.VIDCS(VIDCS),.VIDDO(VIDDO),
 	.SNDRQ(SNDRQ),.SNDNO(SNDNO),
@@ -56,8 +52,9 @@ SEGASYS1_MAIN Main (
 // Video
 wire [7:0] OPIX;
 SEGASYS1_VIDEO Video (
-	.RESET(reset),.VCLKx8(clk48M),.VCLKx4(clk24M),.VCLKx2(clk12M),.VCLK(clk6M),
-	.PH(PH),.PV(PV),.VFLP(VIDMD[7]),.VBLK(VBLK),.RGB8(OPIX),.PALDSW(1'b0),
+	.RESET(reset),.VCLKx8(clk48M),
+	.PH(PH),.PV(PV),.VFLP(VIDMD[7]),
+	.VBLK(VBLK),.PCLK(PCLK),.RGB8(OPIX),.PALDSW(1'b0),
 
 	.cpu_cl(CPUCLn),.cpu_ad(CPUAD),.cpu_wr(CPUWR),.cpu_dw(CPUDO),
 	.cpu_rd(VIDCS),.cpu_dr(VIDDO),
@@ -65,47 +62,12 @@ SEGASYS1_VIDEO Video (
 	.ROMCL(ROMCL),.ROMAD(ROMAD),.ROMDT(ROMDT),.ROMEN(ROMEN)
 );
 assign POUT = VIDMD[4] ? 0 : OPIX;
-assign PCLK = clk6M;
 
 // Sound
 SEGASYS1_SOUND Sound(
-	clk8M, reset, SNDNO, SNDRQ, SOUT,
+	clk48M, reset, SNDNO, SNDRQ, SOUT,
 	ROMCL, ROMAD, ROMDT, ROMEN
 );
-
-endmodule
-
-
-//----------------------------------
-//  Clock Generator
-//----------------------------------
-module CLKGEN
-(
-	input	 clk48M,
-
-	output clk24M,
-	output clk12M,
-	output clk6M,
-	output clk3M,
-
-	output reg clk8M
-);
-
-reg [4:0] clkdiv;
-always @( posedge clk48M ) clkdiv <= clkdiv+1;
-assign clk24M = clkdiv[0];
-assign clk12M = clkdiv[1];
-assign clk6M  = clkdiv[2];
-assign clk3M  = clkdiv[3];
-
-reg [1:0] count;
-always @( posedge clk48M ) begin
-	if (count > 2'd2) begin
-		count <= count - 2'd2;
-      clk8M <= ~clk8M;
-   end
-   else count <= count + 2'd1;
-end
 
 endmodule
 
