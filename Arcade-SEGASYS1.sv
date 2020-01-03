@@ -77,8 +77,9 @@ assign LED_USER  = ioctl_download;
 assign LED_DISK  = 0;
 assign LED_POWER = 0;
 
-assign HDMI_ARX = status[1] ? 8'd16 : 8'd4;
-assign HDMI_ARY = status[1] ? 8'd9  : 8'd3;
+wire   screen_H = status[6]|~SYSMODE[1];
+assign HDMI_ARX = status[1] ? 8'd16 : screen_H ? 8'd4 : 8'd3;
+assign HDMI_ARY = status[1] ? 8'd9  : screen_H ? 8'd3 : 8'd4;
 
 `include "build_id.v" 
 
@@ -87,6 +88,7 @@ localparam CONF_STR = {
 	"-;",
 	"H0O1,Aspect Ratio,Original,Wide;",
 	"O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
+	"O6,Auto Rotation,On,Off;",
 	"-;",
 	"DIP;",
 	"-;",
@@ -261,9 +263,79 @@ always @(posedge clk_hdmi) begin
 	ce_pix  <= old_clk & ~ce_vid;
 end
 
-arcade_fx #(256,8) arcade_video
+
+wire			HDMI_CLK_H;
+wire			HDMI_CE_H;
+wire [7:0]	HDMI_R_H;
+wire [7:0]	HDMI_G_H;
+wire [7:0]	HDMI_B_H;
+wire			HDMI_HS_H;
+wire			HDMI_VS_H;
+wire			HDMI_DE_H;
+wire [1:0]	HDMI_SL_H;
+
+wire [21:0]	gamma_bus_H;
+
+arcade_fx #(256,8) videoH
 (
 	.*,
+
+	.HDMI_CLK(HDMI_CLK_H),
+	.HDMI_CE(HDMI_CE_H),
+	.HDMI_R(HDMI_R_H),
+	.HDMI_G(HDMI_G_H),
+	.HDMI_B(HDMI_B_H),
+	.HDMI_HS(HDMI_HS_H),
+	.HDMI_VS(HDMI_VS_H),
+	.HDMI_DE(HDMI_DE_H),
+	.HDMI_SL(HDMI_SL_H),
+
+	.clk_video(clk_hdmi),
+
+	.RGB_in({r,g,b}),
+	.HBlank(hblank),
+	.VBlank(vblank),
+	.HSync(~hs),
+	.VSync(~vs),
+	.gamma_bus(gamma_bus_H),
+
+	.fx(status[5:3])
+);
+
+wire			HDMI_CLK_V;
+wire			HDMI_CE_V;
+wire [7:0]	HDMI_R_V;
+wire [7:0]	HDMI_G_V;
+wire [7:0]	HDMI_B_V;
+wire			HDMI_HS_V;
+wire			HDMI_VS_V;
+wire			HDMI_DE_V;
+wire [1:0]	HDMI_SL_V;
+
+wire [21:0]	gamma_bus_V;
+
+arcade_rotate_fx #(256,224,8,1) videoV
+(
+	.*,
+
+	.HDMI_CLK(HDMI_CLK_V),
+	.HDMI_CE(HDMI_CE_V),
+	.HDMI_R(HDMI_R_V),
+	.HDMI_G(HDMI_G_V),
+	.HDMI_B(HDMI_B_V),
+	.HDMI_HS(HDMI_HS_V),
+	.HDMI_VS(HDMI_VS_V),
+	.HDMI_DE(HDMI_DE_V),
+	.HDMI_SL(HDMI_SL_V),
+
+	.VGA_CLK(),
+	.VGA_CE(),
+	.VGA_R(),
+	.VGA_G(),
+	.VGA_B(),
+	.VGA_HS(),
+	.VGA_VS(),
+	.VGA_DE(),
 
 	.clk_video(clk_hdmi),
 
@@ -273,8 +345,25 @@ arcade_fx #(256,8) arcade_video
 	.HSync(~hs),
 	.VSync(~vs),
 
-	.fx(status[5:3])
+	.gamma_bus(gamma_bus_V),
+	.fx(status[5:3]),
+	.no_rotate(1'b0),
 );
+
+assign HDMI_CLK = screen_H ? HDMI_CLK_H : HDMI_CLK_V;
+assign HDMI_CE  = screen_H ? HDMI_CE_H  : HDMI_CE_V;
+assign HDMI_R   = screen_H ? HDMI_R_H   : HDMI_R_V;
+assign HDMI_G   = screen_H ? HDMI_G_H   : HDMI_G_V;
+assign HDMI_B   = screen_H ? HDMI_B_H   : HDMI_B_V;
+assign HDMI_HS  = screen_H ? HDMI_HS_H  : HDMI_HS_V;
+assign HDMI_VS  = screen_H ? HDMI_VS_H  : HDMI_VS_V;
+assign HDMI_DE  = screen_H ? HDMI_DE_H  : HDMI_DE_V;
+assign HDMI_SL  = screen_H ? HDMI_SL_H  : HDMI_SL_V;
+
+assign gamma_bus[21] = screen_H ? gamma_bus_H[21] : gamma_bus_V[21];
+assign gamma_bus_H[20:0] = gamma_bus[20:0];
+assign gamma_bus_V[20:0] = gamma_bus[20:0];
+
 
 wire			PCLK;
 wire  [8:0] HPOS,VPOS;
