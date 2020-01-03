@@ -6,5 +6,5 @@ FPGA implementation of SEGA SYSTEM 1 arcade board
 Specifications will be changed without notice.
 Just build and enjoy it yourself.
 
-
+We do not accept issues or pull requests yet.
 We apologize for the inconvenience.
