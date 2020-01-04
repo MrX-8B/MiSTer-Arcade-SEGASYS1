@@ -7,11 +7,13 @@
 	<manufacturer>Sega</manufacturer>
 	<category>Space / Cyber Tank</category>
 	<rbf>segasys1</rbf>
-    <switches default="FF,FC">
-		<dip bits="9" name="(dummy)" ids="0,1"/>
+    <switches default="FF,FE">
+		<dip bits="10,11" name="Lives" ids="Infinite,5,4,3"/>
+		<dip bits="14" name="Difficulty" ids="Hard,Easy"/>
+		<dip bits="15" name="Allow Continue" ids="No,Yes"/>
 	</switches>
 	<rom index="1">
-		<part>00</part>
+		<part>02</part>
 	</rom>
 	<rom index="0" zip="regulus.zip" md5="94204986e14ad0825b3cf6f0fdf8148e" type="merged|nonmerged|split">
 		<part name="epr-5640a.129"/>

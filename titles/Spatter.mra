@@ -8,8 +8,11 @@
 	<category>Maze / Extra</category>
 	<category>Racing / Bicycle</category>
 	<rbf>segasys1</rbf>
-    <switches default="FF,FC">
-		<dip bits="9" name="(dummy)" ids="0,1"/>
+    <switches default="FF,FE">
+		<dip bits="9" name="Demo Sound" ids="On,Off"/>
+		<dip bits="10,11" name="Lives" ids="Infinite,4,2,3"/>
+		<dip bits="12,13" name="Extend" ids="None,100k only,50k 200k,40k 120k 480k"/>
+		<dip bits="14" name="Reset Timer On Life Loss" ids="Yes,No"/>
 	</switches>
 	<rom index="1">
 		<part>04</part>

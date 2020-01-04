@@ -7,11 +7,14 @@
 	<manufacturer>Sega</manufacturer>
 	<category>Fighter / Warriors</category>
 	<rbf>segasys1</rbf>
-    <switches default="FF,FC">
-		<dip bits="9" name="(dummy)" ids="0,1"/>
+    <switches default="FF,F0">
+		<dip bits="9" name="Maximum Credits" ids="99,9"/>
+		<dip bits="10,11" name="Lives"  ids="Infinite,5,4,3"/>
+		<dip bits="12,13" name="Extend" ids="40k ev.30k,30k ev.30k,20k 40k ev.30k,10k 30k ev.30k"/>
+		<dip bits="14" name="Difficulty" ids="Hard,Easy"/>
 	</switches>
 	<rom index="1">
-		<part>02</part>
+		<part>06</part>
 	</rom>
 	<rom index="0" zip="mrviking.zip" md5="7fa47147c580223c95b5e9b0ef8a3774" type="merged|nonmerged|split">
 		<part name="epr-5873.129"/>

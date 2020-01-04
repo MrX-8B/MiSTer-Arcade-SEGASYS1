@@ -10,8 +10,11 @@
 	<rom index="1">
 		<part>00</part>
 	</rom>
-    <switches default="FF,FC">
-		<dip bits="9" name="(dummy)" ids="0,1"/>
+    <switches default="FF,FE">
+		<dip bits="9" name="Demo Sound" ids="On,Off"/>
+		<dip bits="10,11" name="Lives" ids="Infinite,5,4,3"/>
+		<dip bits="12,13" name="Extend" ids="90000,70000,50000,30000"/>
+		<dip bits="14" name="Difficulty" ids="Hard,Easy"/>
 	</switches>
 	<rom index="0" zip="4dwarrio.zip" md5="625faf4fd89b5c3f04fabc9ed68bf07a" type="merged|nonmerged|split">
 		<part name="4d.116"/>

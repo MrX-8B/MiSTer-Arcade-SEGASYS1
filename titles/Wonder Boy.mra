@@ -7,8 +7,12 @@
 	<manufacturer>Escape (Sega license)</manufacturer>
 	<category>Platform / Extra</category>
 	<rbf>segasys1</rbf>
-    <switches default="FF,FC">
-		<dip bits="9" name="(dummy)" ids="0,1"/>
+    <switches default="FF,FE">
+		<dip bits="9" name="Demo Sound" ids="On,Off"/>
+		<dip bits="10,11" name="Lives" ids="Free Play,5,4,3"/>
+		<dip bits="12" name="Extend" ids="30k 120k 210k 300k,30k 100k 170k 240k"/>
+		<dip bits="13" name="Allow Continue" ids="No,Yes"/>
+		<dip bits="14" name="Difficulty" ids="Hard,Easy"/>
 	</switches>
 	<rom index="1">
 		<part>00</part>

@@ -153,7 +153,7 @@ wire cs_port1 =  (CPUAD[4:2] == 3'b0_00) & CPUIO;
 wire cs_port2 =  (CPUAD[4:2] == 3'b0_01) & CPUIO;
 wire cs_portS =  (CPUAD[4:2] == 3'b0_10) & CPUIO;
 wire cs_portA =  (CPUAD[4:2] == 3'b0_11) & ~CPUAD[0] & CPUIO;
-wire cs_portB =(((CPUAD[4:2] == 3'b0_11) &  CPUAD[0]) | (CPUAD[4:0] == 5'b1_0000)) & CPUIO;
+wire cs_portB =(((CPUAD[4:2] == 3'b0_11) &  CPUAD[0]) | (CPUAD[4:2] == 3'b1_00)) & CPUIO;
 
 wire [7:0] inp;
 dataselector5 dsel(

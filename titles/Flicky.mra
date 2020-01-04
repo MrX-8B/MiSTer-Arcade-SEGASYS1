@@ -10,7 +10,7 @@
 	<rbf>segasys1</rbf>
     <switches default="FF,FC">
 		<dip bits="10,11" name="Lives" ids="Infinite,5,4,3"/>
-		<dip bits="12,13" name="Extend" ids="40k/140k/280k,40k/120k/240k,30k/100k/200k,30k/80k/160k"/>
+		<dip bits="12,13" name="Extend" ids="40k 140k 280k,40k 120k 240k,30k 100k 200k,30k 80k 160k"/>
 		<dip bits="14"    name="Difficulty" ids="Hard,Easy"/>
 	</switches>
 	<rom index="1">
