@@ -7,7 +7,7 @@
 	<manufacturer>Sega</manufacturer>
 	<category>Fighter / Warriors</category>
 	<rbf>segasys1</rbf>
-    <switches default="FF,70">
+    <switches default="FF,7E">
 		<dip bits="9" name="Maximum Credits" ids="99,9"/>
 		<dip bits="10,11" name="Lives"  ids="Infinite,5,4,3"/>
 		<dip bits="12,13" name="Extend" ids="40k ev.30k,30k ev.30k,20k 40k ev.30k,10k 30k ev.30k"/>
