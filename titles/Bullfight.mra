@@ -8,7 +8,7 @@
 	<category>Maze / Animals</category>
 	<category>Sports</category>
 	<rbf>segasys1</rbf>
-    <switches default="FF,FE">
+    <switches default="FF,7E">
 		<dip bits="9" name="Demo Sound" ids="On,Off"/>
 		<dip bits="10,11" name="Lives" ids="Infinite,5,4,3"/>
 		<dip bits="12,13" name="Extend" ids="None,70000,50000,30000"/>

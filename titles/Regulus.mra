@@ -7,7 +7,7 @@
 	<manufacturer>Sega</manufacturer>
 	<category>Space / Cyber Tank</category>
 	<rbf>segasys1</rbf>
-    <switches default="FF,FE">
+    <switches default="FF,7E">
 		<dip bits="10,11" name="Lives" ids="Infinite,5,4,3"/>
 		<dip bits="14" name="Difficulty" ids="Hard,Easy"/>
 		<dip bits="15" name="Allow Continue" ids="No,Yes"/>

@@ -7,7 +7,7 @@
 	<manufacturer>Sega</manufacturer>
 	<category>Racing / Cars</category>
 	<rbf>segasys1</rbf>
-    <switches default="FF,FC">
+    <switches default="FF,7C">
 		<dip bits="9" name="(dummy)" ids="0,1"/>
 	</switches>
 	<rom index="1">
