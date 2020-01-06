@@ -125,7 +125,7 @@ reg norot;
 always @(posedge VGA_CLK) norot <= no_rotate | direct_video;
 
 assign HDMI_CLK = VGA_CLK;
-assign HDMI_SL  = (no_rotate & ~direct_video) ? 2'd0 : sl[1:0];
+assign HDMI_SL  = /*(no_rotate & ~direct_video) ? 2'd0 :*/ sl[1:0];
 wire [2:0] sl = fx ? fx - 1'd1 : 3'd0;
 wire scandoubler = fx || forced_scandoubler;
 
