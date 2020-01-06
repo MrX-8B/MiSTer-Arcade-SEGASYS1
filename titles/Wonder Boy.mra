@@ -2,12 +2,12 @@
 	<name>Wonder Boy (set 1, 315-5177)</name>
 	<mameversion>0217</mameversion>
 	<setname>wboy</setname>
-	<mratimestamp>20200102000000</mratimestamp>
+	<mratimestamp>20200107000000</mratimestamp>
 	<year>1986</year>
 	<manufacturer>Escape (Sega license)</manufacturer>
 	<category>Platform / Extra</category>
 	<rbf>segasys1</rbf>
-    <switches default="FF,FE">
+    <switches default="FF,7E">
 		<dip bits="9" name="Demo Sound" ids="On,Off"/>
 		<dip bits="10,11" name="Lives" ids="Free Play,5,4,3"/>
 		<dip bits="12" name="Extend" ids="30k 120k 210k 300k,30k 100k 170k 240k"/>
