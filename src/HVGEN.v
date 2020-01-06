@@ -33,7 +33,7 @@ wire [8:0] HS_N = 447+(HS_E-320);
 
 wire [8:0] VS_B = 226+(VOFFS*4);
 wire [8:0] VS_E =   4+(VS_B);
-wire [8:0] VS_N = 483+(VS_E-230);
+wire [8:0] VS_N = 481+(VS_E-230);
 
 always @(posedge PCLK) begin
 	case (hcnt)
