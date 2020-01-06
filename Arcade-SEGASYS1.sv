@@ -92,6 +92,9 @@ localparam CONF_STR = {
 	"-;",
 	"DIP;",
 	"-;",
+	"OOS,Analog Video H-Pos,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31;",
+	"OTV,Analog Video V-Pos,0,1,2,3,4,5,6,7;",
+	"-;",
 	"R0,Reset;",
 	"J1,Trig1,Trig2,Start 1P,Start 2P,Coin;",
 	"jn,A,B,Start,Select,R;",
@@ -99,6 +102,9 @@ localparam CONF_STR = {
 };
 
 wire bCabinet = 1'b0;
+
+wire [4:0] HOFFS = status[28:24];
+wire [2:0] VOFFS = status[31:29];
 
 
 ////////////////////   CLOCKS   ///////////////////
@@ -286,7 +292,7 @@ HVGEN hvgen
 (
 	.HPOS(HPOS),.VPOS(VPOS),.PCLK(PCLK),.iRGB(POUT),
 	.oRGB({b,g,r}),.HBLK(hblank),.VBLK(vblank),.HSYN(hs),.VSYN(vs),
-	.H240(SYSMODE[2])
+	.H240(SYSMODE[2]),.HOFFS(HOFFS),.VOFFS(VOFFS)
 );
 assign ce_vid = PCLK;
 
