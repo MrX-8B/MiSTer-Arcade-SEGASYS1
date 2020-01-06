@@ -137,30 +137,30 @@ always @( posedge clk or posedge reset ) begin
 			fv2 <= _fv2;
 			fv3 <= _fv3;
 
-			if ( fc0 == 0 ) begin
+			if ( fq0 != 0 && fc0 == 0 ) begin
 				fc0 <=  fq0;
 				fo0 <= ~fo0;
 			end
-			else fc0 <= fc0-1;
+			else fc0 <= (fc0!=0) ? (fc0-1) : 0;
 			
-			if ( fc1 == 0 ) begin
+			if ( fq1 != 0 && fc1 == 0 ) begin
 				fc1 <=  fq1;
 				fo1 <= ~fo1;
 			end
-			else fc1 <= fc1-1;
+			else fc1 <= (fc1!=0) ? (fc1-1) : 0;
 
-			if ( fc2 == 0 ) begin
+			if ( fq2 != 0 && fc2 == 0 ) begin
 				fc2 <=  fq2;
 				fo2 <= ~fo2;
 			end
-			else fc2 <= fc2-1;
+			else fc2 <= (fc2!=0) ? (fc2-1) : 0;
 
 			// NoiseGen update
-			if ( fc3 == 0 ) begin
+			if ( fq3 != 0 && fc3 == 0 ) begin
 				fc3 <= fq3;
 				rng <= { 1'b0, rng[15:1] } ^ rfb;
 			end
-			else fc3 <= fc3-1;
+			else fc3 <= (fc3!=0) ? (fc3-1) : 0;
 
 			// Sound update
 			sndout <= {8{sndmix[8]}}|(sndmix[7:0]);
