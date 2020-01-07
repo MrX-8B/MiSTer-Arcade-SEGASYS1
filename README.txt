@@ -47,6 +47,8 @@ How to install:
   2. copy releases/*.rbf to /media/fat/_Arcade/cores
   3. copy ROM zip files  to /media/fat/_Arcade/mame
 
+If you copied the file to _Arcade/cores,
+rename it to "SEGASYS1_*.rbf" with the "Arcade-" at the head of the file name removed.
 
 Be sure to use the MRA file in "releases" of this repository.
 It does not guarantee the operation when using other MRA files.
