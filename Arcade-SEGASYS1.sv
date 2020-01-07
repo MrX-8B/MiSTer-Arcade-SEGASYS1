@@ -96,8 +96,8 @@ localparam CONF_STR = {
 	"OTV,Analog Video V-Pos,0,1,2,3,4,5,6,7;",
 	"-;",
 	"R0,Reset;",
-	"J1,Trig1,Trig2,Start 1P,Start 2P,Coin;",
-	"jn,A,B,Start,Select,R;",
+	"J1,Trig1,Trig2,Trig3,Start 1P,Start 2P,Coin;",
+	"jn,A,B,R,Start,Select,L;",
 	"V,v",`BUILD_DATE
 };
 
@@ -193,6 +193,7 @@ always @(posedge clk_sys) begin
 			'hX74: btn_right       <= pressed; // right
 			'h029: btn_trig1       <= pressed; // space
 			'h014: btn_trig2       <= pressed; // ctrl
+			'h011: btn_trig3		  <= pressed; // alt
 			'h005: btn_one_player  <= pressed; // F1
 			'h006: btn_two_players <= pressed; // F2
 
@@ -207,6 +208,7 @@ always @(posedge clk_sys) begin
 			'h034: btn_right_2     <= pressed; // G
 			'h01C: btn_trig1_2     <= pressed; // A
 			'h01B: btn_trig2_2     <= pressed; // S
+			'h015: btn_trig3_2     <= pressed; // Q
 		endcase
 	end
 end
@@ -217,6 +219,7 @@ reg btn_right = 0;
 reg btn_left  = 0;
 reg btn_trig1 = 0;
 reg btn_trig2 = 0;
+reg btn_trig3 = 0;
 reg btn_one_player  = 0;
 reg btn_two_players = 0;
 
@@ -230,6 +233,8 @@ reg btn_left_2  = 0;
 reg btn_right_2 = 0;
 reg btn_trig1_2 = 0;
 reg btn_trig2_2 = 0;
+reg btn_trig3_2 = 0;
+
 
 
 wire m_up2     = btn_up_2    | joystk2[3];
@@ -238,9 +243,10 @@ wire m_left2   = btn_left_2  | joystk2[1];
 wire m_right2  = btn_right_2 | joystk2[0];
 wire m_trig21  = btn_trig1_2 | joystk2[4];
 wire m_trig22  = btn_trig2_2 | joystk2[5];
+wire m_trig23  = btn_trig3_2 | joystk2[6];
 
-wire m_start1  = btn_one_player  | joystk1[6] | joystk2[6] | btn_start_1;
-wire m_start2  = btn_two_players | joystk1[7] | joystk2[7] | btn_start_2;
+wire m_start1  = btn_one_player  | joystk1[7] | joystk2[7] | btn_start_1;
+wire m_start2  = btn_two_players | joystk1[8] | joystk2[8] | btn_start_2;
 
 wire m_up1     = btn_up      | joystk1[3] | (bCabinet ? 1'b0 : m_up2);
 wire m_down1   = btn_down    | joystk1[2] | (bCabinet ? 1'b0 : m_down2);
@@ -248,6 +254,7 @@ wire m_left1   = btn_left    | joystk1[1] | (bCabinet ? 1'b0 : m_left2);
 wire m_right1  = btn_right   | joystk1[0] | (bCabinet ? 1'b0 : m_right2);
 wire m_trig11  = btn_trig1   | joystk1[4] | (bCabinet ? 1'b0 : m_trig21);
 wire m_trig12  = btn_trig2   | joystk1[5] | (bCabinet ? 1'b0 : m_trig22);
+wire m_trig13  = btn_trig3   | joystk1[6] | (bCabinet ? 1'b0 : m_trig23);
 
 wire m_coin1   = btn_one_player | btn_coin_1 | joystk1[8];
 wire m_coin2   = btn_two_players| btn_coin_2 | joystk2[8];
@@ -307,8 +314,8 @@ assign AUDIO_S = 0; // unsigned PCM
 
 wire iRST = RESET | status[0] | buttons[1];
 
-wire [7:0] INP0 = ~{m_left1,m_right1,m_up1,m_down1,1'd0,m_trig12,m_trig11,1'd0}; 
-wire [7:0] INP1 = ~{m_left2,m_right2,m_up2,m_down2,1'd0,m_trig22,m_trig21,1'd0}; 
+wire [7:0] INP0 = ~{m_left1,m_right1,m_up1,m_down1,1'd0,m_trig12,m_trig11,m_trig13};
+wire [7:0] INP1 = ~{m_left2,m_right2,m_up2,m_down2,1'd0,m_trig22,m_trig21,m_trig23};
 wire [7:0] INP2 = ~{2'd0,m_start2,m_start1,3'd0, m_coin}; 
 
 

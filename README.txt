@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------
 -- 
--- Arcade: SEGA System I  for MiSTer by MiSTer-X
+-- Arcade: SEGA System 1  for MiSTer by MiSTer-X
 -- 07 January 2020
 -- 
 ---------------------------------------------------------------------------------
@@ -17,6 +17,7 @@
 --   UP,DOWN,LEFT,RIGHT arrows : Movements
 --   SPACE       : Trig1
 --   CTRL        : Trig2
+--   ALT         : Trig3
 --
 -- MAME/IPAC/JPAC Style Keyboard inputs:
 --   5           : Coin 1
@@ -26,9 +27,12 @@
 --   R,F,D,G     : Player 2 Movements
 --   A           : Player 2 Trig1
 --   S           : Player 2 Trig2
+--   Q           : Player 2 Trig3
 --
 -- Joystick support.
 --
+---------------------------------------------------------------------------------
+-- 2020/01/08  Impl. Trigger 3  (for SEGA Ninja)
 ---------------------------------------------------------------------------------
 
                                 *** Attention ***
