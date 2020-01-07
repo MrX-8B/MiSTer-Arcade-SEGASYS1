@@ -256,8 +256,8 @@ wire m_trig11  = btn_trig1   | joystk1[4] | (bCabinet ? 1'b0 : m_trig21);
 wire m_trig12  = btn_trig2   | joystk1[5] | (bCabinet ? 1'b0 : m_trig22);
 wire m_trig13  = btn_trig3   | joystk1[6] | (bCabinet ? 1'b0 : m_trig23);
 
-wire m_coin1   = btn_one_player | btn_coin_1 | joystk1[8];
-wire m_coin2   = btn_two_players| btn_coin_2 | joystk2[8];
+wire m_coin1   = btn_one_player | btn_coin_1 | joystk1[9];
+wire m_coin2   = btn_two_players| btn_coin_2 | joystk2[9];
 wire m_coin    = (m_coin1|m_coin2);
 
 
