@@ -290,7 +290,7 @@ arcade_video #(256,224,8,1) videov
 
 	.fx(status[5:3]),
 	.no_rotate(screen_H),
-	.rotate_ccw(1'b0)
+	.rotate_ccw(1'b1)
 );
 
 wire			PCLK;
