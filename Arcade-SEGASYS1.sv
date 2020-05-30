@@ -1,7 +1,7 @@
 //=========================================================
 //  Arcade: SEGA SYSTEM 1  for MiSTer
 //
-//                          Copyright (c) 2019 MiSTer-X
+//                        Copyright (c) 2019,20 MiSTer-X
 //=========================================================
 
 module emu
@@ -276,7 +276,7 @@ always @(posedge clk_hdmi) begin
 	ce_pix  <= old_clk & ~ce_vid;
 end
 
-arcade_rotate_fx #(256,224,8,1) videoV
+arcade_video #(256,224,8,1) videov
 (
 	.*,
 
@@ -290,6 +290,7 @@ arcade_rotate_fx #(256,224,8,1) videoV
 
 	.fx(status[5:3]),
 	.no_rotate(screen_H),
+	.rotate_ccw(1'b0)
 );
 
 wire			PCLK;
